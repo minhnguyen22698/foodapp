@@ -4,7 +4,7 @@ import { Text, StyleSheet, View, AsyncStorage } from 'react-native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import NewsScreen from './Screens/News'
 import Icons from 'react-native-vector-icons/dist/Ionicons.js'
-import ProfileScreen from './Screens/Profile'
+import ProfileScreen from './Profile/Profile'
 import LoginState from './loginstate'
 import firebase from 'firebase'
 const Tab = createMaterialBottomTabNavigator()

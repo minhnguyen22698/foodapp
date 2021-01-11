@@ -263,7 +263,6 @@ class Profile extends Component {
         return this.renderImage(image);
     }
     onLogOut = () => {
-        
         firebase.auth().signOut().then(()=>{
             this.props.navigation.navigate('login')
         })

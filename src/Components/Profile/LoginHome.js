@@ -20,10 +20,10 @@ import {
 import Icon from 'react-native-vector-icons/dist/Ionicons'
 import logoapp from '../Images/logo/vegan.png'
 // import SplashScreen from 'react-native-splash-screen'
-import firebase from './firebaseconfig'
-import background_image from '../Assets/bg.png'
+import firebase from '../firebaseconfig'
+import background_image from '../../Assets/bg.png'
 import Spinner from 'react-native-spinkit'
-import i18n from '../utils/i18n'
+import i18n from '../../utils/i18n'
 
 const { width: WIDTH } = Dimensions.get('window')
 
