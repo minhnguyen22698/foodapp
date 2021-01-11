@@ -27,6 +27,7 @@ import {
 } from 'native-base'
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from 'moment';
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -64,17 +65,10 @@ class Profile extends Component {
                 age: '22',
                 gender: 'Female',
                 phone: '0979780528',
-                dob: ' 1998-06-22',
+                dob: '1998-06-22',
                 address: 'Quận 7',
             }
         };
-        this.setDate = this.setDate.bind(this);
-    }
-    setDate(newDate) {
-        this.setState({ chosenDate: newDate });
-    }
-    async componentDidMount() {
-        //var data = await AsyncStorage.getItem('username')
     }
 
     pickSingleWithCamera(cropping, mediaType = 'photo') {
@@ -286,14 +280,14 @@ class Profile extends Component {
         }
 
     }
-    handleConfirmDate = (val) => {
-        this.setDate(prevState=>({
-            userinfotemp:{
-                ...prevState.userinfotemp,
-                dob:val
-            },
-        }))
-    }
+    // handleConfirmDate = (val) => {
+    //     this.setDate(prevState=>({
+    //         userinfotemp:{
+    //             ...prevState.userinfotemp,
+    //             dob:val
+    //         },
+    //     }))
+    // }
     hanleChangeGender = (e) => {
         this.setState(prevState => ({
             userinfotemp: {
@@ -301,7 +295,6 @@ class Profile extends Component {
                 gender: e
             }
         }))
-        console.log(this.state.userinfotemp)
     }
     handleChangeUsername = (e) => {
         this.setState(prevState => ({
@@ -311,16 +304,16 @@ class Profile extends Component {
             }
         }))
     }
-    handleDobChange = (e) => {
-        // var datetemp = new Date(e)
-        // var date = datetemp.getDate() + "/" + (datetemp.getMonth() + 1) + "/" + datetemp.getFullYear()
-        this.setState(prevState => ({
-            userinfotemp: {
-                ...prevState.userinfotemp,
-                dob: e
-            },
-        }))
-    }
+    // handleDobChange = (e) => {
+    //     // var datetemp = new Date(e)
+    //     // var date = datetemp.getDate() + "/" + (datetemp.getMonth() + 1) + "/" + datetemp.getFullYear()
+    //     this.setState(prevState => ({
+    //         userinfotemp: {
+    //             ...prevState.userinfotemp,
+    //             dob: e
+    //         },
+    //     }))
+    // }
     hanldeAddressChange = (e) => {
         this.setState(prevState => ({
             userinfotemp: {
@@ -341,14 +334,14 @@ class Profile extends Component {
         })
     }
     onSaveDob = (val) => {
+        let temp = moment(val).format('YYYY-MM-DD')
         this.setState(prevState => ({
             userinfotemp: {
                 ...prevState.userinfotemp,
-                dob: val.toString()
+                dob: temp,
             },
             dobEdit:false,
         }))
-        console.log(Object.date(val))
     }
     OnSaveEdit = () => {
         this.setState({
@@ -430,7 +423,7 @@ class Profile extends Component {
                             >
                                 <Picker.Item label="Male" value="Male" />
                                 <Picker.Item label="Female" value="Female" />
-                                <Picker.Item label="Others" value="other" />
+                                <Picker.Item label="Others" value="Others" />
                             </Picker>
                             : <Text style={styles.text}>{this.state.userinfo.gender}</Text>}
                     </View>
@@ -447,9 +440,8 @@ class Profile extends Component {
                                 onCancel={this.onCancelDob}
                             />
                             <TouchableOpacity onPress={this.EditDob} style={styles.datepicker}>
-                                <Text style={styles.text}>{this.state.userinfotemp.dob}</Text>
+                                <Text style={styles.text}>{confirmDate(this.state.userinfotemp.dob)}</Text>
                             </TouchableOpacity> 
-
                         </View> : <Text style={styles.text}>{confirmDate(this.state.userinfo.dob)}</Text>}
                     </View>
                     <View style={styles.userinfo}>

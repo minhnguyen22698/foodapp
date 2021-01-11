@@ -23,6 +23,7 @@ import logoapp from '../Images/logo/vegan.png'
 import firebase from './firebaseconfig'
 import background_image from '../Assets/bg.png'
 import Spinner from 'react-native-spinkit'
+import i18n from '../utils/i18n'
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -169,7 +170,7 @@ class App extends Component {
                 </View>
                 <View style={styles.buttoncontainer}>
                     <TouchableOpacity style={styles.button} onPress={this.btnlogin_click}>
-                        <Text>LOGIN</Text>
+                        <Text>{i18n.t("login")}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={this.onRegistry}>
                         <Text>Registry</Text>
