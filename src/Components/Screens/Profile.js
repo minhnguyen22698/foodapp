@@ -28,6 +28,7 @@ import {
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from 'moment';
+import firebase from 'firebase'
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -262,7 +263,10 @@ class Profile extends Component {
         return this.renderImage(image);
     }
     onLogOut = () => {
-        this.props.navigation.navigate('login')
+        
+        firebase.auth().signOut().then(()=>{
+            this.props.navigation.navigate('login')
+        })
     }
     onEditClick = () => {
         if (this.state.isEdit) {
@@ -459,9 +463,6 @@ class Profile extends Component {
                                 <TouchableOpacity style={styles.btn} onPress={this.onLogOut}>
                                     <Text>Log out</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.btn} onPress={() => console.log(this.state.userinfo)}>
-                                    <Text>Test</Text>
-                                </TouchableOpacity>
                             </View>
                             :
                             <View style={{ flexDirection: 'row' }}>
@@ -472,14 +473,6 @@ class Profile extends Component {
                                     <Text>Save</Text>
                                 </TouchableOpacity>
                             </View>}
-                    </View>
-                    <View>
-                        <TouchableOpacity style={styles.btn} onPress={() => console.log(this.state.userinfo)}>
-                            <Text>Test</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn} onPress={() => console.log(this.state.userinfotemp)}>
-                            <Text>Test 23</Text>
-                        </TouchableOpacity>
                     </View>
                 </ScrollView>
                 <FAB

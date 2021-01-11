@@ -5,6 +5,8 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import NewsScreen from './Screens/News'
 import Icons from 'react-native-vector-icons/dist/Ionicons.js'
 import ProfileScreen from './Screens/Profile'
+import LoginState from './loginstate'
+import firebase from 'firebase'
 const Tab = createMaterialBottomTabNavigator()
 
 class HomeScreen extends Component {
@@ -21,12 +23,14 @@ class HomeScreen extends Component {
         }
     }
     async componentDidMount() {
-        console.log(this.props.route.params.testing)
+        firebase.auth().onAuthStateChanged(user=>{
+            console.log(user)
+        })
         try {
             await AsyncStorage.setItem('username', JSON.stringify(this.state.data))
         }
-        catch (e) {
-            console.log(e)
+        catch (err) {
+            console.log(err)
         }
     }
     render() {
@@ -45,7 +49,7 @@ class HomeScreen extends Component {
                         )
                     }}
                 />
-                <Tab.Screen name="Profile" component={ProfileScreen}
+                <Tab.Screen name="Profile" component={LoginState}
                     options={{
                         tabBarColor: '#1ABC9C',
                         tabBarLabel: 'profile ',

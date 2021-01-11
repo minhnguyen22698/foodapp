@@ -75,31 +75,29 @@ class App extends Component {
     }
 
     btnlogin_click = () => {
-        // this.setState({
-        //     isLoading: true,
-        // })
-        // firebase
-        //     .auth()
-        //     .signInWithEmailAndPassword(this.state.email.trim(), this.state.password.trim())
-        //     .then((res) => {
-        //         console.log(res.additionalUserInfo.isNewUser)
-        //         console.log('User logged-in successfully!')
-        //         this.setState({
-        //             isLoading: false,
-        //             email: '',
-        //             password: '',
-        //         })
-        //         this.props.navigation.navigate('Home Screen')
-        //     })
-        //     .catch(error => {
-        //         this.setState({
-        //             isLoading: false,
-        //         })
-        //         ToastAndroid.show(`${error}`, ToastAndroid.SHORT)
-        //     })
-        this.props.navigation.navigate('Home Screen', {
-            data: 'Bryan Nguyễn'
+        this.setState({
+            isLoading: true,
         })
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(this.state.email.trim(), this.state.password.trim())
+            .then((res) => {
+                console.log(res.additionalUserInfo.isNewUser)
+                console.log('User logged-in successfully!')
+                this.setState({
+                    isLoading: false,
+                    email: '',
+                    password: '',
+                })
+                this.props.navigation.navigate('profile')
+            })
+            .catch(error => {
+                this.setState({
+                    isLoading: false,
+                })
+                ToastAndroid.show(`${error}`, ToastAndroid.SHORT)
+            })
+        // this.props.navigation.navigate('Home Screen')
     }
     // onClick = () => {
     //     this.translateX.setValue(25)

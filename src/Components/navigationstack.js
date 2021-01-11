@@ -8,10 +8,9 @@ import Registry from './Registry';
 import { NavigationContainer } from '@react-navigation/native';
 import Forgot from './Forgotpassword';
 import Addnew from './NewsSceen/addnew'
+import Profile from './Screens/Profile';
 
 const Stack = createStackNavigator();
-
-
 
 class Nav extends Component {
     constructor() {
@@ -20,7 +19,7 @@ class Nav extends Component {
     render() {
         return (
             <NavigationContainer>
-                <Stack.Navigator mode="modal" headerMode='none'>
+                <Stack.Navigator initialRouteName={'Home Screen'} mode="modal" headerMode='none'>
                     <Stack.Screen name="login"
                         options={{
                             headerShown: false
@@ -53,6 +52,14 @@ class Nav extends Component {
                             }
                         }}
                         component={Addnew} />
+                    <Stack.Screen name="profile"
+                        options={{
+                            headerShown: true,
+                            headerStyle: {
+                                backgroundColor: '#20ACF9'
+                            }
+                        }}
+                        component={Profile} />
                 </Stack.Navigator>
             </NavigationContainer>
         )
