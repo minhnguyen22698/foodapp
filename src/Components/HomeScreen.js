@@ -6,12 +6,14 @@ import NewsScreen from './Screens/News'
 import Icons from 'react-native-vector-icons/dist/Ionicons.js'
 import ProfileScreen from './Profile/Profile'
 import firebase from 'firebase'
+import LoginScreen from './Profile/LoginHome'
 const Tab = createMaterialBottomTabNavigator()
 
 class HomeScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            userindex:false,
             index: 0,
             data:{
                 username: 'Minh Nguyễn',
@@ -22,16 +24,34 @@ class HomeScreen extends Component {
         }
     }
     async componentDidMount() {
+        await AsyncStorage.setItem('username', JSON.stringify(this.state.data))
         firebase.auth().onAuthStateChanged(user=>{
-            console.log(user)
+            if(user)
+            {
+                this.setState({
+                    userindex: true
+                })
+            }else{
+                this.setState({
+                    userindex:false
+                })
+            }
         })
-        try {
-            await AsyncStorage.setItem('username', JSON.stringify(this.state.data))
-        }
-        catch (err) {
-            console.log(err)
-        }
     }
+    // componentDidUpdate(){
+    //     firebase.auth().onAuthStateChanged(user=>{
+    //         if(user)
+    //         {
+    //             this.setState({
+    //                 userindex: true
+    //             })
+    //         }else{
+    //             this.setState({
+    //                 userindex:false
+    //             })
+    //         }
+    //     })
+    // }
     render() {
         return (
             <Tab.Navigator initialRouteName="News"
@@ -48,7 +68,7 @@ class HomeScreen extends Component {
                         )
                     }}
                 />
-                <Tab.Screen name="Profile" component={ProfileScreen}
+                <Tab.Screen name="Profile" component={(this.state.userindex? ProfileScreen: LoginScreen)}
                     options={{
                         tabBarColor: '#1ABC9C',
                         tabBarLabel: 'profile ',

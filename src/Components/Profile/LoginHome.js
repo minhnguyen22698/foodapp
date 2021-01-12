@@ -18,7 +18,6 @@ import {
     Portal,
 } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/dist/Ionicons'
-import logoapp from '../Images/logo/vegan.png'
 // import SplashScreen from 'react-native-splash-screen'
 import firebase from '../firebaseconfig'
 import background_image from '../../Assets/bg.png'
@@ -89,7 +88,7 @@ class App extends Component {
                     email: '',
                     password: '',
                 })
-                this.props.navigation.navigate('profile')
+                // this.props.navigation.navigate('profile')
             })
             .catch(error => {
                 this.setState({

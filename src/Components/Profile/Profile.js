@@ -264,7 +264,7 @@ class Profile extends Component {
     }
     onLogOut = () => {
         firebase.auth().signOut().then(()=>{
-            this.props.navigation.navigate('login')
+            
         })
     }
     onEditClick = () => {
