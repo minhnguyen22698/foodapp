@@ -5,7 +5,6 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import NewsScreen from './Screens/News'
 import Icons from 'react-native-vector-icons/dist/Ionicons.js'
 import ProfileScreen from './Profile/Profile'
-import LoginState from './loginstate'
 import firebase from 'firebase'
 const Tab = createMaterialBottomTabNavigator()
 
@@ -49,7 +48,7 @@ class HomeScreen extends Component {
                         )
                     }}
                 />
-                <Tab.Screen name="Profile" component={LoginState}
+                <Tab.Screen name="Profile" component={ProfileScreen}
                     options={{
                         tabBarColor: '#1ABC9C',
                         tabBarLabel: 'profile ',
@@ -63,8 +62,8 @@ class HomeScreen extends Component {
     }
 }
 
-export default HomeScreen
-
 const S = StyleSheet.create({
 
 })
+
+export default HomeScreen
