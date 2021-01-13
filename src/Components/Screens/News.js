@@ -5,6 +5,7 @@ import avatar from '../../Assets/Pictures/Avatar.jpg';
 import avatarMinh from '../../Assets/Pictures/avatarMinh.jpg';
 import picture from '../../Assets/Pictures/HookTheHead.jpg';
 import { State, TouchableOpacity } from 'react-native-gesture-handler';
+import i18n from '../i18n';
 
 class News extends Component {
     constructor(props) {
@@ -43,46 +44,49 @@ class News extends Component {
     }
     render() {
         return (
-            <ScrollView>
-                <View style={styles.container}>
-                    <Content>
-                        <Card>
-                            <CardItem>
-                                <Left>
-                                    <Thumbnail source={this.state.post_profile.user_picture} />
-                                    <Body>
-                                        <Text>{this.state.post_profile.user_name}</Text>
-                                    </Body>
-                                </Left>
-                            </CardItem>
-                            <CardItem cardBody>
-                                <View style={styles.container}>
-                                    <TouchableOpacity onPress={this.showDetail}>
-                                        <Image source={this.state.post_profile.post_picture} style={{ height: 200, width: null, flex: 1 }} />
-                                    </TouchableOpacity>
-                                </View>
-                            </CardItem>
-                            <CardItem>
-                                <Left>
-                                    <Button transparent>
-                                        <Icon active name="thumbs-up" />
-                                        <Text>{this.state.post_profile.likes_count} likes</Text>
-                                    </Button>
-                                </Left>
-                                {/* <Body>
-                                    <Button transparent>
-                                        <Icon active name="chatbubbles" />
-                                        <Text>{this.state.post_profile.comments_count} comments</Text>
-                                    </Button>
-                                </Body> */}
-                                <Right>
-                                    <Text>{this.state.post_profile.post_time} ago</Text>
-                                </Right>
-                            </CardItem>
-                        </Card>
-                    </Content>
-                </View>
-            </ScrollView>
+            // <ScrollView>
+            //     <View style={styles.container}>
+            //         <Content>
+            //             <Card>
+            //                 <CardItem>
+            //                     <Left>
+            //                         <Thumbnail source={this.state.post_profile.user_picture} />
+            //                         <Body>
+            //                             <Text>{i18n.t('login')}</Text>
+            //                         </Body>
+            //                     </Left>
+            //                 </CardItem>
+            //                 <CardItem cardBody>
+            //                     <View style={styles.container}>
+            //                         <TouchableOpacity onPress={this.showDetail}>
+            //                             <Image source={this.state.post_profile.post_picture} style={{ height: 200, width: null, flex: 1 }} />
+            //                         </TouchableOpacity>
+            //                     </View>
+            //                 </CardItem>
+            //                 <CardItem>
+            //                     <Left>
+            //                         <Button transparent>
+            //                             <Icon active name="thumbs-up" />
+            //                             <Text>{this.state.post_profile.likes_count} likes</Text>
+            //                         </Button>
+            //                     </Left>
+            //                     {/* <Body>
+            //                         <Button transparent>
+            //                             <Icon active name="chatbubbles" />
+            //                             <Text>{this.state.post_profile.comments_count} comments</Text>
+            //                         </Button>
+            //                     </Body> */}
+            //                     <Right>
+            //                         <Text>{this.state.post_profile.post_time}ago</Text>
+            //                     </Right>
+            //                 </CardItem>
+            //             </Card>
+            //         </Content>
+            //     </View>
+            // </ScrollView>
+            <View>
+                <Text>{i18n.t('login')}</Text>
+            </View>
         )
     }
 }

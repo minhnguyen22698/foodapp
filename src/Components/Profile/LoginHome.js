@@ -23,7 +23,6 @@ import firebase from '../firebaseconfig'
 import background_image from '../../Assets/bg.png'
 import Spinner from 'react-native-spinkit'
 import i18n from '../i18n';
-import { useTranslation } from 'react-i18next/hooks';
 
 
 const { width: WIDTH } = Dimensions.get('window')
