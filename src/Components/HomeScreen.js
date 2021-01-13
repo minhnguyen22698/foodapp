@@ -54,7 +54,7 @@ class HomeScreen extends Component {
     // }
     render() {
         return (
-            <Tab.Navigator initialRouteName="News"
+            <Tab.Navigator initialRouteName="Profile"
                 shifting={true}
                 sceneAnimationEnabled={true}>
                 <Tab.Screen

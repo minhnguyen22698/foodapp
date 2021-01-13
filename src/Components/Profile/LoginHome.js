@@ -22,7 +22,9 @@ import Icon from 'react-native-vector-icons/dist/Ionicons'
 import firebase from '../firebaseconfig'
 import background_image from '../../Assets/bg.png'
 import Spinner from 'react-native-spinkit'
-import i18n from '../../utils/i18n'
+import i18n from '../i18n';
+import { useTranslation } from 'react-i18next/hooks';
+
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -167,9 +169,20 @@ class App extends Component {
                 </View>
                 <View style={styles.buttoncontainer}>
                     <TouchableOpacity style={styles.button} onPress={this.btnlogin_click}>
-                        <Text>{i18n.t("login")}</Text>
+                        <Text>{i18n.t('login')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={this.onRegistry}>
+                        <Text>Registry</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={()=>{
+                        console.log(i18n.language)
+                        i18n.changeLanguage(i18n.language=='en'?'vi':'en')
+                        .then(()=>{
+                            this.setState({
+                                isChange:true
+                            })
+                        })
+                    }}>
                         <Text>Registry</Text>
                     </TouchableOpacity>
                 </View>
@@ -177,6 +190,7 @@ class App extends Component {
         )
     }
 }
+
 const styles = StyleSheet.create({
     backgroundcontainer: {
         flex: 2,

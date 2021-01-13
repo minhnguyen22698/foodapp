@@ -9,7 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Forgot from './Forgotpassword';
 import Addnew from './NewsSceen/addnew'
 import Profile from './Profile/Profile';
-
+import './i18n'
 const Stack = createStackNavigator();
 
 class Nav extends Component {
