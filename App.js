@@ -23,17 +23,21 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-// import SplashScreen from 'react-native-splash-screen'
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider } from 'react-native-paper'
 import Nav from './src/Components/navigationstack'
 
 class App extends React.Component {
+  constructor(props){
+    super(props)
+    this.state={
+      isloading: true
+    }
+  }
 
-  // componentDidMount() {
-  //   SplashScreen.hide()
-  // }
+//  componentDidMount() {
 
+//   }
   render() {
     return (
       <PaperProvider>

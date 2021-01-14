@@ -9,7 +9,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import Forgot from './Forgotpassword';
 import Addnew from './NewsSceen/addnew'
 import Profile from './Profile/Profile';
+import SplashScreen from './splashscreen'
 import './i18n'
+
 const Stack = createStackNavigator();
 
 class Nav extends Component {
@@ -19,7 +21,14 @@ class Nav extends Component {
     render() {
         return (
             <NavigationContainer>
-                <Stack.Navigator initialRouteName={'Home Screen'} mode="modal" headerMode='none'>
+                <Stack.Navigator initialRouteName={'splash'} mode="modal" headerMode='none'>
+                    <Stack.Screen
+                    name="splash"
+                    options={{
+                        headerShown: false
+                    }}
+                    component={SplashScreen}
+                    />
                     <Stack.Screen name="login"
                         options={{
                             headerShown: false
