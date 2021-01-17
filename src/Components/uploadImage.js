@@ -52,7 +52,7 @@ function uploadImage(uri, name) {
       })
       .then(() => {
         uploadBlob.close();
-        return true
+        return imageRef.getDownloadURL()
       })
       .then((url) => {
         resolve(url);

@@ -90,7 +90,8 @@ class Detail extends Component {
             <View style={styles.container}>
                 <Content>
                     <Card>
-                        <CardItem>
+                        <Text style={{color:'#000000',backgroundColor:'red'}}>{this.props.name}</Text>
+                        {/* <CardItem>
                             <Left>
                                 <Thumbnail source={this.props.profile.user_picture} />
                                 <Body>
@@ -119,15 +120,7 @@ class Detail extends Component {
                                 renderItem={renderItem}
                                 keyExtractor={item => item.id}
                             />
-                        </CardItem>
-                        <CardItem>
-                            <TouchableOpacity onPress={this.testClick}>
-                                <Text>
-                                    {/* {this.state.discription[1].fooddetail.name} */}
-                                    Ok
-                                </Text>
-                            </TouchableOpacity>
-                        </CardItem>
+                        </CardItem> */}
                     </Card>
                 </Content>
             </View>

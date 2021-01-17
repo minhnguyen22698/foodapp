@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   Image,
   PermissionsAndroid,
+  LogBox,
 } from 'react-native';
-import fire from 'firebase';
 import {
   Container,
   Header,
@@ -52,6 +52,7 @@ class AddNew extends Component {
     super(props);
     this.state = {
       fooddetail: {
+        userid:'',
         name: '',
         material: '',
         discription: [],
@@ -65,7 +66,9 @@ class AddNew extends Component {
       isEdit: false,
     };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    LogBox.ignoreAllLogs();
+  }
   onChangeText = (key) => (e) => {
     this.setState((prevState) => ({
       fooddetail: {
@@ -148,19 +151,18 @@ class AddNew extends Component {
     this.setState((prevState) => ({
       fooddetail: {
         ...prevState.fooddetail,
-        image: name,
+        image: uri,
+        userid:currentUser.uid
       },
     }));
-    if(uri==true){
-      this.props.navigation.goBack()
-    }
-    // fire
-    //   .database()
-    //   .ref('/data')
-    //   .push({
-    //     fooddetail: this.state.fooddetail,
-    //   })
-    //   .catch({});
+    firebase
+      .database()
+      .ref('/data')
+      .push({
+        fooddetail: this.state.fooddetail,
+      })
+      .catch({});
+      this.props.navigation.goBack();
   };
   permision = async () => {
     const granted = await PermissionsAndroid.request(
@@ -177,7 +179,7 @@ class AddNew extends Component {
     );
     console.log(granted);
   };
-  async _onUploadImage(cropping, mediaType = 'photo') {
+   _onUploadImage(cropping, mediaType = 'photo') {
     ImagePicker.openCamera({
       cropping: cropping,
       width: 500,
@@ -199,12 +201,47 @@ class AddNew extends Component {
       })
       .catch((e) => alert(e));
   }
+  pickSingle(cropit, circular = false, mediaType) {
+    ImagePicker.openPicker({
+      width: 500,
+      height: 500,
+      cropping: cropit,
+      cropperCircleOverlay: circular,
+      sortOrder: 'none',
+      compressImageMaxWidth: 1000,
+      compressImageMaxHeight: 1000,
+      compressImageQuality: 1,
+      compressVideoPreset: 'MediumQuality',
+      includeExif: true,
+      cropperStatusBarColor: 'white',
+      cropperToolbarColor: 'white',
+      cropperActiveWidgetColor: 'white',
+      cropperToolbarWidgetColor: '#3498DB',
+    })
+      .then((image) => {
+        console.log('received image', image);
+        this.setState({
+          image: {
+            uri: image.path,
+            width: image.width,
+            height: image.height,
+            mime: image.mime,
+          },
+          images: null,
+        });
+        uploadImage(image.path,'image/jpeg')
+      })
+      .catch((e) => {
+        console.log(e);
+        Alert.alert(e.message ? e.message : e);
+      });
+  }
   onCancle = async () => {
     // let imageRef = await storageRef.child(`${this.state.fooddetail.image}`).getDownloadURL()
     // this.setState({
     //   imagetemp: imageRef
     // });
-    this.props.navigation.goBack()
+    this.props.navigation.goBack();
   };
   render() {
     let renderStep = this.state.fooddetail.discription.map((item) => {
@@ -267,7 +304,7 @@ class AddNew extends Component {
                 ) : (
                   <View>
                     <TouchableOpacity
-                      onPress={async () => this._onUploadImage(false)}>
+                      onPress={async () => this.pickSingle(false)}>
                       <Icons
                         name={'image-outline'}
                         size={26}
