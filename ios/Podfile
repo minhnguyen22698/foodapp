@@ -20,6 +20,9 @@ target 'LastProject' do
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
+
+  pod 'react-native-fetch-blob', :path => '../node_modules/react-native-fetch-blob'
+
   target 'LastProjectTests' do
     inherit! :complete
     # Pods for testing

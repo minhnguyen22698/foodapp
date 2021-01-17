@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, StatusBar, Image, ScrollView } from 'react-native';
-import { Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body, Right } from 'native-base';
-import avatar from '../../Assets/Pictures/Avatar.jpg';
+import { SafeAreaView, ScrollView } from 'react-native';
 import avatarMinh from '../../Assets/Pictures/avatarMinh.jpg';
 import picture from '../../Assets/Pictures/HookTheHead.jpg';
-import { State, TouchableOpacity } from 'react-native-gesture-handler';
-import i18n from '../i18n';
+import RenderNewsCard from './renderNewsCard';
+import firebase from 'firebase';
+import { ThemeProvider } from '@react-navigation/native';
 
 class News extends Component {
     constructor(props) {
@@ -17,10 +16,10 @@ class News extends Component {
                 post_picture: '',
                 post_time: '',
                 likes_count: '',
-                post_detail: '',
-                stars_count: '',
+                comments_count: '',
                 post_date: '',
             },
+            post_detail: [],
         }
     }
     componentDidMount() {
@@ -30,85 +29,44 @@ class News extends Component {
                 user_name: 'Minh Nguyễn',
                 post_picture: picture,
                 post_time: '5m',
-                likes_count: '15',
-                post_detail: 'Món ngon mỗi ngày',
-                stars_count: '25',
+                likes_count: 15,
+                comments_count: 5,
                 post_date: '01/12/2020',
             },
-        })
+            post_detail: this.readNewsData(),
+        });
     }
     showDetail = () => {
-        // this.props.navigation.navigate("Detail", {
-        //     post_data: this.state.post_profile
-        // });
+        this.props.navigation.navigate("Detail", {
+            post_data: this.state.post_profile,
+            detail_data: this.state.post_detail[1].fooddetail,
+        });
+        console.log(this.state.post_detail[1].fooddetail)
+    }
+    readNewsData() {
+        firebase.database().ref('data/').once('value', (snapshot) => {
+            const dataNews = Object.values(snapshot.val())
+            if (snapshot.val() !== null && snapshot.val() !== undefined) {
+                this.setState({
+                    post_detail: dataNews
+                })
+            } else {
+                console.log('err')
+            }
+        });
     }
     render() {
         return (
-            // <ScrollView>
-            //     <View style={styles.container}>
-            //         <Content>
-            //             <Card>
-            //                 <CardItem>
-            //                     <Left>
-            //                         <Thumbnail source={this.state.post_profile.user_picture} />
-            //                         <Body>
-            //                             <Text>{i18n.t('login')}</Text>
-            //                         </Body>
-            //                     </Left>
-            //                 </CardItem>
-            //                 <CardItem cardBody>
-            //                     <View style={styles.container}>
-            //                         <TouchableOpacity onPress={this.showDetail}>
-            //                             <Image source={this.state.post_profile.post_picture} style={{ height: 200, width: null, flex: 1 }} />
-            //                         </TouchableOpacity>
-            //                     </View>
-            //                 </CardItem>
-            //                 <CardItem>
-            //                     <Left>
-            //                         <Button transparent>
-            //                             <Icon active name="thumbs-up" />
-            //                             <Text>{this.state.post_profile.likes_count} likes</Text>
-            //                         </Button>
-            //                     </Left>
-            //                     {/* <Body>
-            //                         <Button transparent>
-            //                             <Icon active name="chatbubbles" />
-            //                             <Text>{this.state.post_profile.comments_count} comments</Text>
-            //                         </Button>
-            //                     </Body> */}
-            //                     <Right>
-            //                         <Text>{this.state.post_profile.post_time}ago</Text>
-            //                     </Right>
-            //                 </CardItem>
-            //             </Card>
-            //         </Content>
-            //     </View>
-            // </ScrollView>
-            <View>
-                <Text>{i18n.t('login')}</Text>
-            </View>
+            <SafeAreaView>
+                <ScrollView>
+                    <RenderNewsCard
+                        profile={this.state.post_profile}
+                        detail={this.state.detail_data}
+                        click={this.showDetail} />
+                </ScrollView>
+            </SafeAreaView>
         )
     }
 }
 
 export default News
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: StatusBar.currentHeight || 0,
-    },
-    item: {
-        backgroundColor: '#f9c2ff',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
-    },
-    title: {
-        fontSize: 32,
-    },
-    tinyLogo: {
-        width: 50,
-        height: 50,
-    },
-})

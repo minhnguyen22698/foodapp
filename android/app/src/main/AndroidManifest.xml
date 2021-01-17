@@ -2,8 +2,11 @@
   package="com.lastproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
+     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />                                               
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />     
 
     <application
       android:name=".MainApplication"
@@ -21,6 +24,7 @@
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>    
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
