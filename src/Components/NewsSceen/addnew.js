@@ -27,6 +27,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import uploadimg from '../uploadImage';
 import uploadImage from './../uploadImage';
 import firebase from 'firebase';
+import i18n from './../i18n';
 
 const storage = firebase.storage();
 const storageRef = storage.ref();
@@ -46,12 +47,15 @@ const {width: WIDTH} = Dimensions.get('window');
 const {height: HEIGHT} = Dimensions.get('window');
 
 const discriptiontemp = [];
+const datetemp= new Date()
+const todaytemp=datetemp.getFullYear()+datetemp.getMonth()+datetemp.getDate()
 
 class AddNew extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fooddetail: {
+        postid:makeid(10)+todaytemp,
         userid:'',
         name: '',
         material: '',
@@ -155,10 +159,13 @@ class AddNew extends Component {
         userid:currentUser.uid
       },
     }));
+    firebase.database().ref('users/'+currentUser.uid+'/profile/posts').push({
+      posts:this.state.fooddetail.postid
+    })
     firebase
       .database()
-      .ref('/data')
-      .push({
+      .ref('data/'+this.state.fooddetail.postid)
+      .set({
         fooddetail: this.state.fooddetail,
       })
       .catch({});
@@ -243,6 +250,13 @@ class AddNew extends Component {
     // });
     this.props.navigation.goBack();
   };
+  onTesting=()=>{
+    const {currentUser} = firebase.auth()
+    const newRef= firebase.database().ref('users/'+currentUser.uid+'/profile/post').push()
+    newRef.set({
+      posts: makeid(20)
+    })
+  }
   render() {
     let renderStep = this.state.fooddetail.discription.map((item) => {
       return (
@@ -264,10 +278,9 @@ class AddNew extends Component {
       );
     });
     return (
-      <SafeAreaView>
         <ScrollView style={s.background}>
           <View style={s.title}>
-            <Text style={s.texttitle}>CREATE YOUR OWN FORMULA</Text>
+            <Text style={s.texttitle}>{i18n.t('addnewtitle')}</Text>
           </View>
           <View style={s.inputform}>
             <Form>
@@ -324,13 +337,13 @@ class AddNew extends Component {
             </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
     );
   }
 }
 const s = StyleSheet.create({
   background: {
-    height: HEIGHT,
+    height: null,
+    paddingTop:20,
     backgroundColor: '#6531F5',
   },
   title: {

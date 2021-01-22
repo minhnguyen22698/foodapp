@@ -35,6 +35,9 @@
 		053455768094418689CF8645 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA440DD56C1F46AA937ECB67 /* Roboto_medium.ttf */; };
 		936BCB6BDE7D4248ADB90E1F /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D00938CFD684FD19399336A /* Roboto.ttf */; };
 		16BA07772AF74D73AD24D33A /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 772B4DE268094E6BB55AE649 /* rubicon-icon-font.ttf */; };
+		C2EF11E94E0B4A6E8E555A2D /* Bavro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07CDA9A53E5440B7A4B587C0 /* Bavro-Regular.ttf */; };
+		F209D443EFCC4BC39EA189FF /* Bavro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B4312F4FD0A47568BA76A0B /* Bavro.ttf */; };
+		D7EC5F3E93B14C4E99B77547 /* Rene Bieder.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F5E9767413C493CBC3E44B0 /* Rene Bieder.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +108,9 @@
 		BA440DD56C1F46AA937ECB67 /* Roboto_medium.ttf */ = {isa = PBXFileReference; name = "Roboto_medium.ttf"; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		5D00938CFD684FD19399336A /* Roboto.ttf */ = {isa = PBXFileReference; name = "Roboto.ttf"; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		772B4DE268094E6BB55AE649 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		07CDA9A53E5440B7A4B587C0 /* Bavro-Regular.ttf */ = {isa = PBXFileReference; name = "Bavro-Regular.ttf"; path = "../src/Assets/fonts/Bavro-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8B4312F4FD0A47568BA76A0B /* Bavro.ttf */ = {isa = PBXFileReference; name = "Bavro.ttf"; path = "../src/Assets/fonts/Bavro.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7F5E9767413C493CBC3E44B0 /* Rene Bieder.ttf */ = {isa = PBXFileReference; name = "Rene Bieder.ttf"; path = "../src/Assets/fonts/Rene Bieder.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +256,9 @@
 				BA440DD56C1F46AA937ECB67 /* Roboto_medium.ttf */,
 				5D00938CFD684FD19399336A /* Roboto.ttf */,
 				772B4DE268094E6BB55AE649 /* rubicon-icon-font.ttf */,
+				07CDA9A53E5440B7A4B587C0 /* Bavro-Regular.ttf */,
+				8B4312F4FD0A47568BA76A0B /* Bavro.ttf */,
+				7F5E9767413C493CBC3E44B0 /* Rene Bieder.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -428,6 +437,9 @@
 				053455768094418689CF8645 /* Roboto_medium.ttf in Resources */,
 				936BCB6BDE7D4248ADB90E1F /* Roboto.ttf in Resources */,
 				16BA07772AF74D73AD24D33A /* rubicon-icon-font.ttf in Resources */,
+				C2EF11E94E0B4A6E8E555A2D /* Bavro-Regular.ttf in Resources */,
+				F209D443EFCC4BC39EA189FF /* Bavro.ttf in Resources */,
+				D7EC5F3E93B14C4E99B77547 /* Rene Bieder.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

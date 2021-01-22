@@ -10,18 +10,29 @@ import {
 import splash from '../Assets/splash.png';
 import bg from '../Assets/bgsplash.jpg';
 import {ActivityIndicator, Colors} from 'react-native-paper';
+import firebase from 'firebase'
 
 class Spalshcreen extends Component {
   constructor(props) {
     super(props);
+    this.state={
+      islogin:false
+    }
     this.animated = new Animated.Value(0);
   }
   async componentDidMount() {
     //using timing
-
     const data = await this.performTimeConsumingTask();
     if (data !== null) {
-      this.props.navigation.navigate('Home Screen')
+      firebase.auth().onAuthStateChanged((user)=>{
+        if(user){
+          this.props.navigation.replace('Home Screen',{userindex:true});
+        }
+        else{
+          this.props.navigation.replace('Home Screen',{userindex:false});
+        }
+      })
+         
     }
   }
   performTimeConsumingTask = async () => {

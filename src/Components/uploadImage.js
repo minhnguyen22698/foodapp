@@ -39,7 +39,6 @@ function uploadImage(uri, name) {
     let uploadBlob = null;
     const uploadUri =
       Platform.OS === 'ios' ? imgUri.replace('file://', '') : imgUri;
-    const {currentUser} = firebase.auth();
     const imageRef = firebase.storage().ref(`/${name}`);
 
     fs.readFile(uploadUri, 'base64')

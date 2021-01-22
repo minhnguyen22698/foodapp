@@ -26,7 +26,7 @@ function renderNewsCard(props) {
   const {image, setImage} = props;
   const {name, setName} = props;
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={()=>{console.log(name)}}>
       <View style={styles.textcontainer}>
         <View style={styles.text}>
           <Text style={styles.name}>{name}</Text>
@@ -35,7 +35,7 @@ function renderNewsCard(props) {
       <View style={styles.imgcontainer}>
         <Image style={styles.img} source={{uri: `${image}`}}></Image>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 export default renderNewsCard;
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     width: WIDTH,
-    backgroundColor:'white'
+    backgroundColor:'transparent',
+    margin:20
   },
   background: {
     flex: 1,
@@ -59,10 +60,10 @@ const styles = StyleSheet.create({
   img: {
     width: '100%',
     height: 100,
+    resizeMode:'stretch'
   },
   textcontainer: {
     flex: 2 / 3,
- 
     justifyContent: 'center',
   },
   name: {

@@ -11,6 +11,9 @@ import Addnew from './NewsSceen/addnew';
 import Profile from './Profile/Profile';
 import SplashScreen from './splashscreen';
 import Detail from './Screens/Detail';
+import Setting from './Profile/setting'
+import Edit from './Profile/editprofile'
+import InitProfile from './Profile/initProfile'
 import './i18n';
 
 const Stack = createStackNavigator();
@@ -52,7 +55,6 @@ class Nav extends Component {
           <Stack.Screen
             name="Home Screen"
             options={{
-              headerShown: false,
             }}
             component={HomeScreen}
           />
@@ -91,6 +93,27 @@ class Nav extends Component {
               headerShown: false,
             }}
             component={Detail}
+          />
+          <Stack.Screen
+            name="Setting"
+            options={{
+              headerShown: false,
+            }}
+            component={Setting}
+          />
+          <Stack.Screen
+            name="Editprofile"
+            options={{
+              headerShown: false,
+            }}
+            component={Edit}
+          />
+          <Stack.Screen
+            name="Initprofile"
+            options={{
+              headerShown: false,
+            }}
+            component={InitProfile}
           />
         </Stack.Navigator>
       </NavigationContainer>

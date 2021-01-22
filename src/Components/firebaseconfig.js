@@ -12,9 +12,7 @@ var firebaseConfig = {
   appId: '1:852892121751:web:b9f84bdd991a02b05647d2',
   measurementId: 'G-4VB06M8S15',
 };
-let fire
-if (firebase.apps.length === 0) {
-   fire = firebase.initializeApp(firebaseConfig);
- 
-}
+
+const fire = firebase.initializeApp(firebaseConfig);
+
 export default fire;

@@ -26,7 +26,7 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider } from 'react-native-paper'
 import Nav from './src/Components/navigationstack'
-
+import firebase from './src/Components/firebaseconfig'
 class App extends React.Component {
   constructor(props){
     super(props)
@@ -34,10 +34,6 @@ class App extends React.Component {
       isloading: true
     }
   }
-
-//  componentDidMount() {
-
-//   }
   render() {
     return (
       <PaperProvider>

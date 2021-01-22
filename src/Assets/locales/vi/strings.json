@@ -1,4 +1,16 @@
 {   
     "login": "Đăng nhập",
-    "registry": "Đăng kí"
+    "registry": "Đăng kí",
+    "home":"Trang Chủ ",
+    "search": "Nhập từ khóa",
+    "profile": "Trang cá nhân",
+    "signinimg":"ĐĂNG ẢNH CỦA BẠN",
+    "imgpickercam":"Chụp ảnh mới",
+    "uploadimg":"Chọn ảnh",
+    "uploadimgfile":"Chọn từ bộ sưu tập",
+    "btnhidetoast":"Ẩn",
+    "profiledetail":"Thông tin cá nhân",
+    "submitprofile":"LƯU",
+    "addnewtitle":"TẠO CÔNG THỨC CỦA RIÊNG BẠN",
+    "editprofile":"Chỉnh sửa thông tin cá nhân"
 }

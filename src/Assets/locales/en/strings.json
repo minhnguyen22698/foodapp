@@ -1,4 +1,16 @@
 {   
     "login": "Login",
-    "registry": "Registry"
+    "registry": "Registry",
+    "home":"HOME PAGE",
+    "search":"Give me infomation !!",
+    "profile":"Profile",
+    "signinimg":"Profile picture",
+    "imgpickercam":"Take New Profile Picture",
+    "uploadimgfile":"Select Profile Picture",
+    "uploadimg":"Upload Image",
+    "btnhidetoast":"Hide",
+    "profiledetail":"Profile detail",
+    "submitprofile":"CONFIRM",
+    "addnewtitle":"CREATE YOUR OWN FORMULA",
+    "editprofile":"Edit Profile"
 }

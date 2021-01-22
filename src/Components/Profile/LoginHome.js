@@ -12,11 +12,13 @@ import {
   ImageBackground,
   ToastAndroid,
   Platform,
+  LogBox,
 } from 'react-native';
 import {Modal, Portal} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/dist/Ionicons';
 // import SplashScreen from 'react-native-splash-screen'
-import firebase from '../firebaseconfig';
+import firebase from 'firebase'
+import fire from '../firebaseconfig'
 import background_image from '../../Assets/bg.png';
 import Spinner from 'react-native-spinkit';
 import i18n from '../i18n';
@@ -63,7 +65,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    //SplashScreen.hide();
+    LogBox.ignoreAllLogs()
   }
   onForgotPassword = () => {
     this.props.navigation.navigate('forgotpassword');
@@ -73,20 +75,25 @@ class App extends Component {
     this.setState({
       isLoading: true,
     });
-    firebase
+    fire
       .auth()
       .signInWithEmailAndPassword(
         this.state.email.trim(),
         this.state.password.trim(),
       )
-      .then((res) => {
-        console.log(res.additionalUserInfo.isNewUser);
-        console.log('User logged-in successfully!');
-        this.setState({
-          isLoading: false,
-          email: '',
-          password: '',
-        });
+      .then(  (res) => {
+        firebase
+          .database()
+          .ref('users/' + res.user.uid)
+          .once('value')
+          .then(async (snapshoot) => {
+            if (snapshoot.val() == null || snapshoot.val() == undefined) {
+              this.props.navigation.navigate('Initprofile')
+            }
+            else{
+               //console.log(Object.values(snapshoot.val()))
+            }
+          });
         // this.props.navigation.navigate('profile')
       })
       .catch((error) => {
