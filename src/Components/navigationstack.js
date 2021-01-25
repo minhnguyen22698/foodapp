@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, StatusBar} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Login from './Profile/LoginHome';
 import HomeScreen from './HomeScreen';
@@ -11,9 +11,9 @@ import Addnew from './NewsSceen/addnew';
 import Profile from './Profile/Profile';
 import SplashScreen from './splashscreen';
 import Detail from './Screens/Detail';
-import Setting from './Profile/setting'
-import Edit from './Profile/editprofile'
-import InitProfile from './Profile/initProfile'
+import Setting from './Profile/setting';
+import Edit from './Profile/editprofile';
+import InitProfile from './Profile/initProfile';
 import './i18n';
 
 const Stack = createStackNavigator();
@@ -24,7 +24,13 @@ class Nav extends Component {
   }
   render() {
     return (
-      <NavigationContainer>
+      <NavigationContainer
+        // onStateChange={() => {
+        //   StatusBar.setBarStyle('dark-content')
+        //   StatusBar.setBackgroundColor('rgba(0,0,0,0)')
+        //   StatusBar.setTranslucent(true)
+        // }}
+        >
         <Stack.Navigator
           initialRouteName={'splash'}
           mode="modal"
@@ -54,8 +60,7 @@ class Nav extends Component {
           />
           <Stack.Screen
             name="Home Screen"
-            options={{
-            }}
+            options={{}}
             component={HomeScreen}
           />
           <Stack.Screen

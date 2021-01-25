@@ -35,7 +35,6 @@ class News extends Component {
     // this.setState({
     //   post_detail: temp,
     // });
-    console.log(this.state.post_detail);
   }
   showDetail = () => {
     this.props.navigation.navigate('Detail', {
@@ -64,6 +63,10 @@ class News extends Component {
         return true;
       });
   }
+  goDetail=(item)=>{
+    this.props.navigation.navigate('Detail',{postinfo: item})
+  }
+
   renderFoodCard = (item, index) => {
     return (
       //   <View>
@@ -75,6 +78,9 @@ class News extends Component {
       <RenderNewsCard
         image={item.item.fooddetail.image}
         name={item.item.fooddetail.name}
+        onPress={()=>
+           this.goDetail(item.item)
+        }
       />
     );
   };

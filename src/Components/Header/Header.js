@@ -1,5 +1,5 @@
-import React, {Component, useState} from 'react';
-import {TouchableOpacity, StyleSheet, View} from 'react-native';
+import React, {Component, useState,useEffect} from 'react';
+import { TouchableOpacity, StyleSheet, View, StatusBar } from 'react-native';
 import Icons from 'react-native-vector-icons/dist/Ionicons';
 import {
   Container,
@@ -25,6 +25,13 @@ function navHeader(props) {
   };
   const [allowSetting, setAllowSetting] = useState(props.setting || false);
   const [allowAddnew, setAllowAddnew] = useState(props.addnew || false);
+
+  useEffect(()=>{
+    StatusBar.setBarStyle('dark-content')
+    StatusBar.setBackgroundColor('rgba(0,0,0,0)')
+    StatusBar.setTranslucent(true)
+  })
+
   return !search ? (
     <Header transparent>
       <Body style={s.title}>
@@ -84,8 +91,8 @@ const s = StyleSheet.create({
     backgroundColor: 'red',
   },
   text: (color) => ({
-    fontSize: 30,
-    fontFamily: 'Bavro',
+    fontSize: 20,
+    fontFamily: 'cooperb',
     color: color || 'white',
   }),
 });

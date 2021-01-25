@@ -12,6 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
+  StatusBar,
   TouchableWithoutFeedbackComponent,
 } from 'react-native';
 import temppic from '../../Assets/temp.jpeg';
@@ -106,6 +107,8 @@ function confirmDate(date) {
 class Profile extends Component {
   constructor(props) {
     super(props);
+    StatusBar.setBackgroundColor('rgba(0,0,0,0)');
+    StatusBar.setTranslucent(true);
     this.state = {
       selected: 'key1',
       test: '',
@@ -304,19 +307,33 @@ class Profile extends Component {
   }
   async componentDidMount() {
     LogBox.ignoreAllLogs();
-    const {currentUser} =firebase.auth()
-    await firebase
+
+    // await firebase
+    //   .database()
+    //   .ref('users/' + currentUser.uid)
+    //   .once('value')
+    //   .then((snapshoot) => {
+    //     if (snapshoot.val() != null && snapshoot.val() != undefined) {
+    //       this.setState({
+    //         userinfo: snapshoot.val().profile,
+    //       });
+    //     }
+    //   });
+    this.getProfile()
+  }
+  getProfile = () => {
+    const {currentUser} = firebase.auth();
+    firebase
       .database()
       .ref('users/' + currentUser.uid)
-      .once('value')
-      .then((snapshoot) => {
+      .on('value', (snapshoot) => {
         if (snapshoot.val() != null && snapshoot.val() != undefined) {
           this.setState({
             userinfo: snapshoot.val().profile,
           });
         }
       });
-  }
+  };
   onEditProfile = () => {
     this.props.navigation.navigate('Editprofile', {
       userinfo: this.state.userinfo,
@@ -331,7 +348,9 @@ class Profile extends Component {
           setting={true}
           addnew={true}
           onAddNew={() => {
-            this.props.navigation.navigate('addnew');
+            this.props.navigation.navigate('addnew', {
+              user: this.state.userinfo,
+            });
           }}
           onSetting={() => {
             this.props.navigation.navigate('Setting');
@@ -350,13 +369,13 @@ class Profile extends Component {
               />
             ) : (
               <View>
-                  <Avatar.Image
-                    color={'white'}
-                    backgroundColor={'#1abc9c'}
-                    source={{uri: `${this.state.userinfo.image}`}}
-                    size={100}
-                  />
-                </View>
+                <Avatar.Image
+                  color={'white'}
+                  backgroundColor={'#1abc9c'}
+                  source={{uri: `${this.state.userinfo.image}`}}
+                  size={100}
+                />
+              </View>
             )}
             <Text style={{fontSize: 20, fontWeight: 'bold'}}>
               {this.state.userinfo.username}
@@ -364,8 +383,18 @@ class Profile extends Component {
           </View>
           <View style={styles.userdetail}>
             <View style={styles.item}>
-              <Text style={styles.itemdetail}>Posts</Text>
-              <Text style={styles.itemdetail}>Saved</Text>
+              <View>
+                <Text style={styles.itemdetail}>Posts</Text>
+                <Text style={styles.itemdetail}>
+                  {this.state.userinfo.posts
+                    ? Object.values(this.state.userinfo.posts).length
+                    : 0}
+                </Text>
+              </View>
+              <View>
+                <Text style={styles.itemdetail}>Saved</Text>
+                <Text style={styles.itemdetail}>0</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -375,7 +404,9 @@ class Profile extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btnedit}
-            onPress={() => console.log(this.state.test.image)}>
+            onPress={() => {
+              console.log(this.state.userinfo.posts);
+            }}>
             <Text style={{color: 'black'}}>{i18n.t('editprofile')}</Text>
           </TouchableOpacity>
         </View>
@@ -411,12 +442,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 10,
   },
   itemdetail: {
     backgroundColor: 'red',
-    padding: 20,
+    padding: 5,
     color: 'black',
     fontWeight: 'bold',
+    alignItems: 'center',
+    textAlign: 'center',
   },
   btnedit: {
     justifyContent: 'center',

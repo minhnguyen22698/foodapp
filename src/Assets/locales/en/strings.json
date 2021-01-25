@@ -12,5 +12,13 @@
     "profiledetail":"Profile detail",
     "submitprofile":"CONFIRM",
     "addnewtitle":"CREATE YOUR OWN FORMULA",
-    "editprofile":"Edit Profile"
+    "editprofile":"Edit Profile",
+    "detail":"Detail",
+    "goprofile":"Profile",
+    "ingre":"Indredients",
+    "steps":"Steps",
+    "setting":"Setting",
+    "logout":"Log out",
+    "edit":"Edit",
+    "changelang":"Change languague"
 }

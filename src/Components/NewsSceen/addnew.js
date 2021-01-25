@@ -54,13 +54,21 @@ class AddNew extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user:this.props.route.params.user,
       fooddetail: {
         postid:makeid(10)+todaytemp,
         userid:'',
+        userimg:'',
+        username:'',
         name: '',
         material: '',
         discription: [],
         image: '',
+        calo:0,
+        prep:0,
+        liked:'',
+        saved:'',
+        createdtime:'',
       },
       image: {
         uri: '',
@@ -150,13 +158,17 @@ class AddNew extends Component {
       '/' +
       makeid(5)
     ).toString();
+    const createdtime= date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate()
     const name = currentUser.uid + today;
     const uri = await uploadImage(this.state.image.uri, name);
     this.setState((prevState) => ({
       fooddetail: {
         ...prevState.fooddetail,
+        userid:currentUser.uid,
+        username:this.state.user.username,
         image: uri,
-        userid:currentUser.uid
+        userimg:this.state.user.image,
+        createdtime:createdtime
       },
     }));
     firebase.database().ref('users/'+currentUser.uid+'/profile/posts').push({

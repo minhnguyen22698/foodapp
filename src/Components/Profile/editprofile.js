@@ -37,7 +37,7 @@ class Edit extends Component {
   render() {
     return (
       <SafeAreaView style={s.container}>
-        <Header title={'Edit'} onGoBack={this.goBack} />
+        <Header title={i18n.t('edit')} onGoBack={this.goBack} />
         <ImageBackground source={bg} style={s.bodycontainer}>
           <View style={{alignItems: 'center'}}>
             {this.state.userinfo.image == '' ? (

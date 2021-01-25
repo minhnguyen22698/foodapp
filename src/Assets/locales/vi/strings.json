@@ -12,5 +12,13 @@
     "profiledetail":"Thông tin cá nhân",
     "submitprofile":"LƯU",
     "addnewtitle":"TẠO CÔNG THỨC CỦA RIÊNG BẠN",
-    "editprofile":"Chỉnh sửa thông tin cá nhân"
+    "editprofile":"Chỉnh sửa thông tin cá nhân",
+    "detail":"Chi tiết",
+    "goprofile":"Thông tin",
+    "ingre":"Thành phần",
+    "steps":"Các bước",
+    "setting":"Cài đặt",
+    "logout":"Đăng xuất",
+    "edit":"Chỉnh sửa",
+    "changelang":"Đổi ngôn ngữ"
 }

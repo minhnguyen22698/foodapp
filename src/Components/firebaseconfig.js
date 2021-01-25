@@ -13,6 +13,10 @@ var firebaseConfig = {
   measurementId: 'G-4VB06M8S15',
 };
 
-const fire = firebase.initializeApp(firebaseConfig);
+let fire
+
+if(firebase.apps.length===0){
+  fire = firebase.initializeApp(firebaseConfig);
+}
 
 export default fire;

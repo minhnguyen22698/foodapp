@@ -180,20 +180,6 @@ class App extends Component {
           <TouchableOpacity style={styles.button} onPress={this.onRegistry}>
             <Text>Registry</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              console.log(i18n.language);
-              i18n
-                .changeLanguage(i18n.language == 'en' ? 'vi' : 'en')
-                .then(() => {
-                  this.setState({
-                    isChange: true,
-                  });
-                });
-            }}>
-            <Text>Registry</Text>
-          </TouchableOpacity>
         </View>
       </ImageBackground>
     );

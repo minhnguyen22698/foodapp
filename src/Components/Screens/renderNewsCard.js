@@ -26,7 +26,7 @@ function renderNewsCard(props) {
   const {image, setImage} = props;
   const {name, setName} = props;
   return (
-    <TouchableOpacity style={styles.container} onPress={()=>{console.log(name)}}>
+    <TouchableOpacity style={styles.container} delayPressIn={200} onPress={props.onPress}>
       <View style={styles.textcontainer}>
         <View style={styles.text}>
           <Text style={styles.name}>{name}</Text>
