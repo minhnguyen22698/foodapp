@@ -19,12 +19,21 @@ import {
 import ImagePicker from 'react-native-image-crop-picker';
 
 import {Avatar, Text} from 'react-native-paper';
-
+import Icons from 'react-native-vector-icons/dist/Ionicons'
 import firebase from 'firebase';
 import RNFetchBlob from 'react-native-fetch-blob';
 import HeaderCus from '../Header/HeadergoBack';
 import i18n from './../i18n';
 import {FlatList} from 'react-native-gesture-handler';
+import {Transition, Transitioning} from 'react-native-reanimated';
+
+const transition = (
+  <Transition.Together>
+    <Transition.In type="fade" durationMs={200} />
+    <Transition.Change />
+    <Transition.Out type="fade" durationMs={200} />
+  </Transition.Together>
+);
 
 const Blob = RNFetchBlob.polyfill.Blob;
 const fs = RNFetchBlob.fs;
@@ -88,7 +97,7 @@ class Profile extends Component {
     super(props);
     this.state = {
       selected: 'key1',
-      userid:this.props.route.params.userpostid,
+      userid: this.props.route.params.userpostid,
       test: '',
       image: {
         uri: '',
@@ -104,6 +113,7 @@ class Profile extends Component {
       userinfo: '',
       havepost: false,
       refeshing: false,
+      isSeemore: false,
     };
   }
   _onRefesh = () => {
@@ -283,7 +293,7 @@ class Profile extends Component {
     LogBox.ignoreAllLogs();
     const checkflag = await this.getProfile();
     await this.getUserPost();
-    console.log(this.state.userid)
+    console.log(this.state.userid);
     StatusBar.setBackgroundColor('rgba(0,0,0,0)');
     StatusBar.setTranslucent(true);
     // await firebase
@@ -326,13 +336,13 @@ class Profile extends Component {
           .on('value', (snapshoot) => {
             if (snapshoot.val() != null && snapshoot.val() != undefined) {
               post.push(snapshoot.val());
+              this.setState({
+                posts: post,
+              });
             }
           });
       });
     }
-    this.setState({
-      posts: post,
-    });
   };
   renderPost = ({item}) => (
     <View>
@@ -342,18 +352,14 @@ class Profile extends Component {
   goDetail = (item) => {
     this.props.navigation.navigate('Detail', {postinfo: item});
   };
-  onGoBack=()=>{
-      this.props.navigation.pop()
-  }
+  onGoBack = () => {
+    this.props.navigation.pop();
+  };
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <HeaderCus
-          title={'profile'}
-          color={'black'}
-          onGoBack={this.onGoBack}
-        />
+        <HeaderCus title={'profile'} color={'black'} onGoBack={this.onGoBack} />
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -363,7 +369,8 @@ class Profile extends Component {
           }>
           <View style={styles.userinfocontainer}>
             <View style={styles.userinfo}>
-              {this.state.userinfo!==''&& this.state.userinfo.image==="" ? (
+              {this.state.userinfo !== '' &&
+              this.state.userinfo.image === '' ? (
                 <Avatar.Text
                   size={100}
                   color={'white'}
@@ -394,32 +401,55 @@ class Profile extends Component {
                       : 0}
                   </Text>
                 </View>
-                <View>
-                  <Text style={styles.itemdetail}>Saved</Text>
-                  <Text style={styles.itemdetail}>0</Text>
-                </View>
               </View>
             </View>
           </View>
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            <TouchableOpacity
-              style={styles.btnedit}
-              activeOpacity={1}
-              onPress={()=>{
-                  console.log(this.state.userid)
-              }}>
-              <Text style={{color: 'black'}}>{i18n.t('editprofile')}</Text>
-            </TouchableOpacity>
+            {this.state.isSeemore ? (
+              <View >
+                <View style={{margin: 10, backgroundColor: 'red',}}>
+                  <View style={{flexDirection:'row',padding:10 }}>
+                    <Icons name="person" size={26} color="silver"/>
+                    <Text style={{color: 'black', fontSize: 20,marginLeft:20}}>
+                      {this.state.userinfo.fullname}
+                    </Text>
+                  </View>
+                  <View style={{flexDirection:'row',padding:10}}>
+                    <Icons name="calendar" size={26} color="silver"/>
+                    <Text style={{color: 'black', fontSize: 20,marginLeft:20}}>
+                      {this.state.userinfo.dob}
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  style={styles.btnedit}
+                  activeOpacity={1}
+                  onPress={() => {
+                    this.setState({isSeemore: false});
+                  }}>
+                  <Text style={{color: 'black'}}>{i18n.t('seemore')}</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={styles.btnedit}
+                activeOpacity={1}
+                onPress={() => {
+                  this.setState({isSeemore: true});
+                }}>
+                <Text style={{color: 'black'}}>{i18n.t('seemore')}</Text>
+              </TouchableOpacity>
+            )}
           </View>
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             {this.state.posts.length !== 0 ? (
               this.state.posts.map((item) => (
                 <TouchableOpacity
                   delayPressIn={200}
-                  onPress={() =>
-                 this.goDetail(item)
-                  //console.log(item)
-                   }>
+                  onPress={
+                    () => this.goDetail(item)
+                    //console.log(item)
+                  }>
                   <ImageBackground
                     imageStyle={{opacity: 0.7}}
                     source={{uri: item.image}}

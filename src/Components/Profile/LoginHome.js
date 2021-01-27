@@ -13,6 +13,7 @@ import {
   ToastAndroid,
   Platform,
   LogBox,
+  StatusBar
 } from 'react-native';
 import {Modal, Portal} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/dist/Ionicons';
@@ -66,6 +67,8 @@ class App extends Component {
 
   componentDidMount() {
     LogBox.ignoreAllLogs()
+    StatusBar.setBackgroundColor('rgba(0,0,0,0)');
+    StatusBar.setTranslucent(true);
   }
   onForgotPassword = () => {
     this.props.navigation.navigate('forgotpassword');

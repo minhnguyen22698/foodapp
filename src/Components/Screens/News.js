@@ -54,7 +54,7 @@ class News extends Component {
     this.setState({
       refeshing: true,
     });
-    await this.readNewsData();
+     this.readNewsData();
     setTimeout(() => {
       this.setState({refeshing: false});
     }, 1000);
@@ -116,12 +116,13 @@ class News extends Component {
         <HeaderCus
           title={'home'}
           allowSearch={true}
-          addnew={true}
+          addnew={this.props.route.params.userindex }
           search={this.state.search}
           onAddNew={() => {
-            this.props.navigation.navigate('addnew', {
-              user: this.state.userinfo,
-            });
+            // this.props.navigation.navigate('addnew', {
+            //   user: this.state.userinfo,
+            // });
+            console.log(this.props.route.params) 
           }}
           cancelSearch={() =>this.setState({search:''})}
           onChangeSearch={this.onChangeSearch}

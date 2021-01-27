@@ -18,7 +18,7 @@ import {
 
 import ImagePicker from 'react-native-image-crop-picker';
 
-import {Avatar, Text} from 'react-native-paper';
+import {Avatar, Text, Divider} from 'react-native-paper';
 
 import firebase from 'firebase';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -105,6 +105,8 @@ class Profile extends Component {
       havepost: false,
       usertemp: this.getProfile(),
       refeshing: false,
+      tabindex: 2,
+      saved: '',
     };
   }
   _onRefesh = () => {
@@ -113,6 +115,7 @@ class Profile extends Component {
     });
     this.getProfile();
     this.getUserPost();
+    this.getSavedPost();
 
     setTimeout(() => {
       this.setState({
@@ -284,6 +287,7 @@ class Profile extends Component {
     LogBox.ignoreAllLogs();
     const checkflag = await this.getProfile();
     await this.getUserPost();
+    await this.getSavedPost();
 
     StatusBar.setBackgroundColor('rgba(0,0,0,0)');
     StatusBar.setTranslucent(true);
@@ -317,7 +321,7 @@ class Profile extends Component {
         });
     });
   };
-  getUserPost = async () => {
+  getUserPost = () => {
     const post = [];
     const posts = Object.values(this.state.userinfo.posts);
     if (posts != null || posts !== undefined) {
@@ -325,21 +329,22 @@ class Profile extends Component {
         firebase
           .database()
           .ref('data/' + item.posts + '/fooddetail')
-          .on('value', (snapshoot) => {
+          .once('value', (snapshoot) => {
             if (snapshoot.val() != null && snapshoot.val() != undefined) {
               post.push(snapshoot.val());
+              this.setState({
+                posts: post,
+              });
             }
           });
       });
     }
-    this.setState({
-      posts: post,
-    });
   };
   onEditProfile = () => {
-    this.props.navigation.navigate('Editprofile', {
-      userinfo: this.state.userinfo,
-    });
+    // this.props.navigation.navigate('Editprofile', {
+    //   userinfo: this.state.userinfo,
+    // });
+    console.log(this.state.saved)
   };
   renderPost = ({item}) => (
     <View>
@@ -349,7 +354,25 @@ class Profile extends Component {
   goDetail = (item) => {
     this.props.navigation.navigate('Detail', {postinfo: item});
   };
-
+  getSavedPost = () => {
+    const post = [];
+    const posts = Object.values(this.state.userinfo.saved);
+    if (posts != null || posts !== undefined) {
+      posts.map((item) => {
+        firebase
+          .database()
+          .ref('data/' + item.postid + '/fooddetail')
+          .once('value', (snapshoot) => {
+            if (snapshoot.val() != null && snapshoot.val() != undefined) {
+              post.push(snapshoot.val());
+              this.setState({
+                saved: post,
+              });
+            }
+          });
+      });
+    }
+  };
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -411,7 +434,11 @@ class Profile extends Component {
                 </View>
                 <View>
                   <Text style={styles.itemdetail}>Saved</Text>
-                  <Text style={styles.itemdetail}>0</Text>
+                  <Text style={styles.itemdetail}>
+                    {this.state.userinfo.saved !== undefined
+                      ? Object.values(this.state.userinfo.saved).length
+                      : 0}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -424,34 +451,114 @@ class Profile extends Component {
               <Text style={{color: 'black'}}>{i18n.t('editprofile')}</Text>
             </TouchableOpacity>
           </View>
-          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            {this.state.posts.length !== 0 ? (
-              this.state.posts.map((item) => (
-                <TouchableOpacity
-                  delayPressIn={200}
-                  onPress={() =>
-                 this.goDetail(item)
-                  //console.log(item)
-                   }>
-                  <ImageBackground
-                    imageStyle={{opacity: 0.7}}
-                    source={{uri: item.image}}
-                    style={styles.postitem}>
-                    {/* <Image source={{uri: item.image}}/> */}
-                    <Text style={styles.postname}>{item.name}</Text>
-                  </ImageBackground>
-                </TouchableOpacity>
-              ))
-            ) : (
-              <View
+          <Divider style={{height: 5, backgroundColor: '#bdc3c7'}} />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={{
+                width: WIDTH / 2 - 55,
+                margin: 10,
+                borderRadius: 10,
+                alignItems: 'center',
+                backgroundColor:
+                  this.state.tabindex == 1 ? '#e67e22' : '#95a5a6',
+              }}
+              onPress={() => {
+                this.setState({tabindex: 1});
+              }}>
+              <Text
                 style={{
-                  flexGrow: 1,
-                  backgroundColor: 'red',
-                  height: null,
-                  width: null,
-                }}></View>
-            )}
+                  color: 'black',
+                  padding: 10,
+                  fontSize: 20,
+                }}>
+                Posts
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: WIDTH / 2 - 55,
+                margin: 10,
+                borderRadius: 10,
+                alignItems: 'center',
+                backgroundColor:
+                  this.state.tabindex == 2 ? '#e67e22' : '#95a5a6',
+              }}
+              activeOpacity={1}
+              onPress={() => {
+                this.setState({tabindex: 2});
+              }}>
+              <Text
+                style={{
+                  color: 'black',
+                  padding: 10,
+                  fontSize: 20,
+                }}>
+                Saved
+              </Text>
+            </TouchableOpacity>
           </View>
+          {this.state.tabindex == 1 ? (
+            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+              {this.state.posts.length !== 0 ? (
+                this.state.posts.map((item) => (
+                  <TouchableOpacity
+                    delayPressIn={200}
+                    onPress={() =>
+                      //this.goDetail(item)
+                      console.log(this.state.userinfo.saved)
+                    }>
+                    <ImageBackground
+                      imageStyle={{opacity: 0.7}}
+                      source={{uri: item.image}}
+                      style={styles.postitem}>
+                      {/* <Image source={{uri: item.image}}/> */}
+                      <Text style={styles.postname}>{item.name}</Text>
+                    </ImageBackground>
+                  </TouchableOpacity>
+                ))
+              ) : (
+                <View
+                  style={{
+                    flexGrow: 1,
+                    backgroundColor: 'red',
+                    height: null,
+                    width: null,
+                  }}></View>
+              )}
+            </View>
+          ) : (
+            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+              {this.state.saved.length !== 0 ? (
+                this.state.saved.map((item) => (
+                  <TouchableOpacity
+                    delayPressIn={200}
+                    onPress={() => this.goDetail(item)}>
+                    <ImageBackground
+                      imageStyle={{opacity: 0.7}}
+                      source={{uri: item.image}}
+                      style={styles.postitem}>
+                      {/* <Image source={{uri: item.image}}/> */}
+                      <Text style={styles.postname}>{item.name}</Text>
+                    </ImageBackground>
+                  </TouchableOpacity>
+                ))
+              ) : (
+                <View
+                  style={{
+                    flexGrow: 1,
+                    backgroundColor: 'red',
+                    height: null,
+                    width: null,
+                  }}></View>
+              )}
+            </View>
+          )}
         </ScrollView>
       </SafeAreaView>
     );

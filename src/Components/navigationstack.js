@@ -15,6 +15,7 @@ import Setting from './Profile/setting';
 import Edit from './Profile/editprofile';
 import InitProfile from './Profile/initProfile';
 import ProfileGuest from './Screens/ProfileGuest'
+import ChatRoom from './ChatRoom/chatroom'
 import './i18n';
 
 const Stack = createStackNavigator();
@@ -124,6 +125,10 @@ class Nav extends Component {
           <Stack.Screen
           name="Guest"
           component={ProfileGuest}
+          />
+          <Stack.Screen
+          name="ChatRoom"
+          component={ChatRoom}
           />
         </Stack.Navigator>
       </NavigationContainer>

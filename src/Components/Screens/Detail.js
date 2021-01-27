@@ -7,6 +7,7 @@ import {
   Image,
   StyleSheet,
   Dimensions,
+  Alert,
 } from 'react-native';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import RenderDetailCard from './renderDetailCard';
@@ -38,50 +39,103 @@ class Detail extends Component {
     this.ref = React.createRef();
     this.state = {
       post: this.props.route.params.postinfo,
-      currentIndex: null,
+      currentIndex: firebase.auth().currentUser,
       isSave: false,
-      listSaved:[]
+      listSaved: [],
     };
   }
+  AlertLogin = () => {
+    Alert.alert(`${i18n.t('loginalert')}`, `${i18n.t('loginalertmess')}`, [
+      {
+        text: i18n.t('alertcancel'),
+        onPress: () => {
+          console.log('cancel');
+        },
+        style: 'cancel',
+      },
+      {
+        text: i18n.t('alertsubmit'),
+        onPress: () => {
+          this.props.navigation.navigate('Profile');
+        },
+      },
+    ]);
+  };
   goProfile = () => {
-    this.props.navigation.navigate('Guest', {userpostid: this.state.post.userid})
+    if (this.state.currentIndex !== null) {
+      const {currentUser} = firebase.auth();
+      if (this.state.post.userid == currentUser.uid) {
+        console.log('Is you');
+        this.props.navigation.navigate('Profile');
+      } else {
+        console.log('not you');
+        this.props.navigation.navigate('Guest', {
+          userpostid: this.state.post.userid,
+        });
+      }
+    } else {
+      this.AlertLogin();
+    }
   };
   onSavePost = () => {
-    const {currentUser} = firebase.auth();
-    const newReference = firebase
-      .database()
-      .ref('users/' + currentUser.uid + '/profile/saved')
-      .push();
-    newReference
-      .set({
-        postid: this.state.post.postid,
-      })
-      .then(() => {
-        console.log('saved');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (this.state.currentIndex !== null) {
+      const {currentUser} = firebase.auth();
+      const newReference = firebase
+        .database()
+        .ref('users/' + currentUser.uid + '/profile/saved')
+        .push();
+      newReference
+        .set({
+          postid: this.state.post.postid,
+        })
+        .then(() => {
+          console.log('saved');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      this.AlertLogin();
+    }
   };
   getListSaved = () => {
-    const {currentUser} = firebase.auth();
-    firebase
-      .database()
-      .ref('users/' + currentUser.uid + '/profile/saved')
-      .on('value', (snapshot) => {
-        const arraysave = [];
-        const saved = Object.values(Object.values(snapshot.val()));
-        saved.map((item) => {
-          arraysave.push(item.postid);
+    if (this.state.currentIndex !== null) {
+      const {currentUser} = firebase.auth();
+      firebase
+        .database()
+        .ref('users/' + currentUser.uid + '/profile/saved')
+        .on('value', (snapshot) => {
+          const arraysave = [];
+          console.log(snapshot.val());
+          if (
+            snapshot.val() !== '' &&
+            snapshot.val() !== undefined &&
+            snapshot.val() !== null
+          ) {
+            const saved = Object.values(Object.values(snapshot.val()));
+            saved.map((item) => {
+              arraysave.push(item.postid);
+            });
+            this.setState({
+              listSaved: arraysave,
+            });
+          }
         });
-        this.setState({
-          listSaved: arraysave
-        })
-      });
+    }
   };
   async componentDidMount() {
-    await this.getListSaved()
+    if (this.state.currentIndex !== null) {
+      await this.getListSaved();
+    }
   }
+  goChat = () => {
+    if (this.state.currentIndex !== null) {
+      this.props.navigation.navigate('ChatRoom');
+    }
+    else{
+      this.AlertLogin()
+    }
+  };
   render() {
     return (
       <SafeAreaView style={s.container}>
@@ -98,7 +152,8 @@ class Detail extends Component {
             <View style={{flexDirection: 'row'}}>
               <Text style={s.foodname}>{this.state.post.name}</Text>
               <View style={s.userbtn}>
-                { this.state.listSaved!==[]&& !this.state.listSaved.includes(this.state.post.postid) ? (
+                {this.state.listSaved !== [] &&
+                !this.state.listSaved.includes(this.state.post.postid) ? (
                   <TouchableOpacity
                     style={s.userbtnitem}
                     onPress={this.onSavePost}>
@@ -144,7 +199,11 @@ class Detail extends Component {
               <Text>Full name</Text>
             </View>
             <View style={s.userbtn}>
-              <Icons name="chatbubble-ellipses-outline" size={26} />
+              <Icons
+                onPress={this.goChat}
+                name="chatbubble-ellipses-outline"
+                size={26}
+              />
               <TouchableOpacity
                 style={s.userbtnitem}
                 delayPressIn={250}

@@ -25,5 +25,11 @@
     "like":"Thích",
      "save":"Lưu",
      "liked":"Đã thích",
-     "saved":"Đã lưu"
+     "saved":"Đã lưu",
+     "chatroom":"Trò chuyện",
+     "loginalert":"Bạn cần đăng nhâp để sử dụng tính năng này",
+     "loginalertmess":"Bạn có muốn chuyển đến màn hình đăng nhập không ?",
+     "alertcancel":"Không",
+    "alertsubmit":"Ok",
+    "seemore": "Xem thêm"
 }

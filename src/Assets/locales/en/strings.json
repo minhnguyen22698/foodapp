@@ -25,5 +25,11 @@
     "like":"Like",
     "save":"Save",
     "liked":"Liked",
-    "saved":"Saved"
+    "saved":"Saved",
+    "chatroom":"Chat Room",
+    "loginalert":"Login Required",
+    "loginalertmess":"Do you want to go to the login screen ?",
+    "alertcancel":"Cancel",
+    "alertsubmit":"Ok",
+    "seemore":"See more"
 }

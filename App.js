@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -23,29 +23,30 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import { Provider as PaperProvider } from 'react-native-paper'
-import Nav from './src/Components/navigationstack'
-import firebase from './src/Components/firebaseconfig'
-import Home from './src/Components/Screens/News'
+import {NavigationContainer} from '@react-navigation/native';
+import {Provider as PaperProvider} from 'react-native-paper';
+import Nav from './src/Components/navigationstack';
+import firebase from './src/Components/firebaseconfig';
+import Home from './src/Components/Screens/News';
 class App extends React.Component {
-  constructor(props){
-    super(props)
-    StatusBar.setBackgroundColor('rgba(0,0,0,0)')
-    StatusBar.setTranslucent(true)
-    this.state={
-      isloading: true
-    }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isloading: true,
+    };
+  }
+  componentDidMount() {
+    StatusBar.setBackgroundColor('rgba(0,0,0,0)');
+    StatusBar.setTranslucent(true);
   }
   render() {
     return (
       <PaperProvider>
-          <Nav/>
+        <Nav />
       </PaperProvider>
-    )
-
+    );
   }
 }
-
 
 export default App;
