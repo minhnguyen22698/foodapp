@@ -19,31 +19,70 @@ import prep from '../../Assets/prep.png';
 // import RenderNewsCard from './renderNewsCard';
 // import firebase from 'firebase';
 import {Divider, Avatar} from 'react-native-paper';
+import firebase from 'firebase';
 import Icons from 'react-native-vector-icons/dist/Ionicons';
-import {Transition,Transitioning} from 'react-native-reanimated'
+import {Transition, Transitioning} from 'react-native-reanimated';
 
 const {width: WIDTH} = Dimensions.get('window');
-const transition=(
-    <Transition.Together>
-        <Transition.In type='fade' durationMs={200}/>
-        <Transition.Change/>
-        <Transition.Out type='fade' durationMs={200}/>
-    </Transition.Together>
-)
+const transition = (
+  <Transition.Together>
+    <Transition.In type="fade" durationMs={200} />
+    <Transition.Change />
+    <Transition.Out type="fade" durationMs={200} />
+  </Transition.Together>
+);
 
 class Detail extends Component {
   constructor(props) {
     super(props);
-    this.ref = React.createRef()
+    this.ref = React.createRef();
     this.state = {
-      post: this.props.route.params.postinfo.fooddetail,
+      post: this.props.route.params.postinfo,
       currentIndex: null,
+      isSave: false,
+      listSaved:[]
     };
   }
-  goProfile = () => {};
-  async componentDidMount() {}
+  goProfile = () => {
+    this.props.navigation.navigate('Guest', {userpostid: this.state.post.userid})
+  };
+  onSavePost = () => {
+    const {currentUser} = firebase.auth();
+    const newReference = firebase
+      .database()
+      .ref('users/' + currentUser.uid + '/profile/saved')
+      .push();
+    newReference
+      .set({
+        postid: this.state.post.postid,
+      })
+      .then(() => {
+        console.log('saved');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  getListSaved = () => {
+    const {currentUser} = firebase.auth();
+    firebase
+      .database()
+      .ref('users/' + currentUser.uid + '/profile/saved')
+      .on('value', (snapshot) => {
+        const arraysave = [];
+        const saved = Object.values(Object.values(snapshot.val()));
+        saved.map((item) => {
+          arraysave.push(item.postid);
+        });
+        this.setState({
+          listSaved: arraysave
+        })
+      });
+  };
+  async componentDidMount() {
+    await this.getListSaved()
+  }
   render() {
- 
     return (
       <SafeAreaView style={s.container}>
         <Header
@@ -56,7 +95,22 @@ class Detail extends Component {
             <Image style={s.img} source={{uri: this.state.post.image}}></Image>
           </View>
           <View style={s.detail}>
-            <Text style={s.foodname}>{this.state.post.name}</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={s.foodname}>{this.state.post.name}</Text>
+              <View style={s.userbtn}>
+                { this.state.listSaved!==[]&& !this.state.listSaved.includes(this.state.post.postid) ? (
+                  <TouchableOpacity
+                    style={s.userbtnitem}
+                    onPress={this.onSavePost}>
+                    <Text style={{color: 'black'}}>{i18n.t('save')}</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity style={s.userbtnitem} disabled={true}>
+                    <Text style={{color: 'black'}}>{i18n.t('saved')}</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
             <View style={{flexDirection: 'row'}}>
               <View style={s.detailitem}>
                 <Image source={calo} style={s.icon} />
@@ -112,18 +166,18 @@ class Detail extends Component {
           </View>
           <View style={s.stepdetail}>
             {this.state.post.discription.map((item, index) => (
-              <Transitioning.View 
-              ref={this.ref}
-              transition={transition}
-              style={{flexGrow:1}}
-              >
+              <Transitioning.View
+                ref={this.ref}
+                transition={transition}
+                style={{flexGrow: 1}}>
                 <TouchableOpacity
                   style={s.stepitem}
                   delayPressIn={200}
                   onPress={() => {
-                    this.ref.current.animateNextTransition()
+                    this.ref.current.animateNextTransition();
                     this.setState({
-                      currentIndex: index ===this.state.currentIndex? null:index,
+                      currentIndex:
+                        index === this.state.currentIndex ? null : index,
                     });
                   }}>
                   <View style={{flexDirection: 'row'}}>

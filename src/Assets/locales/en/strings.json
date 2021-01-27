@@ -20,5 +20,10 @@
     "setting":"Setting",
     "logout":"Log out",
     "edit":"Edit",
-    "changelang":"Change languague"
+    "changelang":"Change languague",
+    "confirm":"Confirm",
+    "like":"Like",
+    "save":"Save",
+    "liked":"Liked",
+    "saved":"Saved"
 }

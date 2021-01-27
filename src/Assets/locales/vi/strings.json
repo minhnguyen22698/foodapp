@@ -20,5 +20,10 @@
     "setting":"Cài đặt",
     "logout":"Đăng xuất",
     "edit":"Chỉnh sửa",
-    "changelang":"Đổi ngôn ngữ"
+    "changelang":"Đổi ngôn ngữ",
+    "confirm":"Xác nhận",
+    "like":"Thích",
+     "save":"Lưu",
+     "liked":"Đã thích",
+     "saved":"Đã lưu"
 }

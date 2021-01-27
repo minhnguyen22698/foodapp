@@ -14,6 +14,7 @@ import Detail from './Screens/Detail';
 import Setting from './Profile/setting';
 import Edit from './Profile/editprofile';
 import InitProfile from './Profile/initProfile';
+import ProfileGuest from './Screens/ProfileGuest'
 import './i18n';
 
 const Stack = createStackNavigator();
@@ -119,6 +120,10 @@ class Nav extends Component {
               headerShown: false,
             }}
             component={InitProfile}
+          />
+          <Stack.Screen
+          name="Guest"
+          component={ProfileGuest}
           />
         </Stack.Navigator>
       </NavigationContainer>

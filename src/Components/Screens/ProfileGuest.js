@@ -22,7 +22,7 @@ import {Avatar, Text} from 'react-native-paper';
 
 import firebase from 'firebase';
 import RNFetchBlob from 'react-native-fetch-blob';
-import HeaderCus from '../Header/Header';
+import HeaderCus from '../Header/HeadergoBack';
 import i18n from './../i18n';
 import {FlatList} from 'react-native-gesture-handler';
 
@@ -88,13 +88,13 @@ class Profile extends Component {
     super(props);
     this.state = {
       selected: 'key1',
+      userid:this.props.route.params.userpostid,
       test: '',
       image: {
         uri: '',
         width: '',
         height: '',
       },
-      user: firebase.auth(),
       images: null,
       name: 'Minh Nguyen',
       gmail: 'minhnguyen22698@gmail.com',
@@ -103,7 +103,6 @@ class Profile extends Component {
       posts: '',
       userinfo: '',
       havepost: false,
-      usertemp: this.getProfile(),
       refeshing: false,
     };
   }
@@ -284,7 +283,7 @@ class Profile extends Component {
     LogBox.ignoreAllLogs();
     const checkflag = await this.getProfile();
     await this.getUserPost();
-
+    console.log(this.state.userid)
     StatusBar.setBackgroundColor('rgba(0,0,0,0)');
     StatusBar.setTranslucent(true);
     // await firebase
@@ -301,10 +300,9 @@ class Profile extends Component {
   }
   getProfile = () => {
     return new Promise((resolve, reject) => {
-      const {currentUser} = firebase.auth();
       firebase
         .database()
-        .ref('users/' + currentUser.uid)
+        .ref('users/' + this.state.userid)
         .on('value', (snapshoot) => {
           if (snapshoot.val() != null && snapshoot.val() != undefined) {
             this.setState({
@@ -336,11 +334,6 @@ class Profile extends Component {
       posts: post,
     });
   };
-  onEditProfile = () => {
-    this.props.navigation.navigate('Editprofile', {
-      userinfo: this.state.userinfo,
-    });
-  };
   renderPost = ({item}) => (
     <View>
       <Text style={{color: 'black'}}>{item.name}</Text>
@@ -349,6 +342,9 @@ class Profile extends Component {
   goDetail = (item) => {
     this.props.navigation.navigate('Detail', {postinfo: item});
   };
+  onGoBack=()=>{
+      this.props.navigation.pop()
+  }
 
   render() {
     return (
@@ -356,16 +352,7 @@ class Profile extends Component {
         <HeaderCus
           title={'profile'}
           color={'black'}
-          setting={true}
-          addnew={true}
-          onAddNew={() => {
-            this.props.navigation.navigate('addnew', {
-              user: this.state.userinfo,
-            });
-          }}
-          onSetting={() => {
-            this.props.navigation.navigate('Setting');
-          }}
+          onGoBack={this.onGoBack}
         />
         <ScrollView
           refreshControl={
@@ -376,14 +363,12 @@ class Profile extends Component {
           }>
           <View style={styles.userinfocontainer}>
             <View style={styles.userinfo}>
-              {this.state.userinfo.image === '' ? (
+              {this.state.userinfo!==''&& this.state.userinfo.image==="" ? (
                 <Avatar.Text
                   size={100}
                   color={'white'}
                   backgroundColor={'#1abc9c'}
-                  label={this.state.user.currentUser.email
-                    .substring(0, 1)
-                    .toUpperCase()}
+                  label={'M'}
                 />
               ) : (
                 <View>
@@ -420,7 +405,9 @@ class Profile extends Component {
             <TouchableOpacity
               style={styles.btnedit}
               activeOpacity={1}
-              onPress={this.onEditProfile}>
+              onPress={()=>{
+                  console.log(this.state.userid)
+              }}>
               <Text style={{color: 'black'}}>{i18n.t('editprofile')}</Text>
             </TouchableOpacity>
           </View>

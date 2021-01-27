@@ -9,7 +9,8 @@ import {
   FlatList,
   Image,
   Dimensions,
-  StatusBar
+  StatusBar,
+  RefreshControl,
 } from 'react-native';
 import RenderNewsCard from './renderNewsCard';
 import firebase from 'firebase';
@@ -27,6 +28,7 @@ class News extends Component {
       post_detail: [],
       refesh: false,
       postdetailtemp: [],
+      refeshing: false,
     };
   }
   async componentDidMount() {
@@ -47,6 +49,15 @@ class News extends Component {
     const imageRef = await storageRef.child(`${name}`).getDownloadURL();
     return imageRef;
   };
+  onRefesh = async () => {
+    this.setState({
+      refeshing: true,
+    });
+    await this.readNewsData();
+    setTimeout(() => {
+      this.setState({refeshing: false});
+    }, 1000);
+  };
   readNewsData() {
     firebase
       .database()
@@ -63,9 +74,10 @@ class News extends Component {
         return true;
       });
   }
-  goDetail=(item)=>{
-    this.props.navigation.navigate('Detail',{postinfo: item})
-  }
+  goDetail = (item) => {
+    this.props.navigation.navigate('Detail', {postinfo: item.fooddetail});
+    //console.log(item)
+  };
 
   renderFoodCard = (item, index) => {
     return (
@@ -78,9 +90,7 @@ class News extends Component {
       <RenderNewsCard
         image={item.item.fooddetail.image}
         name={item.item.fooddetail.name}
-        onPress={()=>
-           this.goDetail(item.item)
-        }
+        onPress={() => this.goDetail(item.item)}
       />
     );
   };
@@ -88,7 +98,12 @@ class News extends Component {
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: '#0984e3'}}>
         <HeaderCus title={'home'} allowSearch={true} />
-        <ScrollView>
+        <ScrollView
+        refreshControl={<RefreshControl
+        refreshing={this.state.refeshing}
+        onRefresh={this.onRefesh}
+        />}
+        >
           {this.state.post_detail != [] ? (
             <View style={{width: WIDTH}}>
               <FlatList
