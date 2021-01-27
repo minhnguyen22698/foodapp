@@ -27,13 +27,14 @@ class News extends Component {
     this.state = {
       post_detail: [],
       refesh: false,
-      postdetailtemp: [],
+      postdetailtemp: '',
       refeshing: false,
+      search: '',
     };
   }
   async componentDidMount() {
     LogBox.ignoreAllLogs();
-    let temp = await this.readNewsData();
+    await this.readNewsData();
     // this.setState({
     //   post_detail: temp,
     // });
@@ -69,9 +70,6 @@ class News extends Component {
             post_detail: dataNews,
           });
         }
-      })
-      .then(() => {
-        return true;
       });
   }
   goDetail = (item) => {
@@ -94,29 +92,69 @@ class News extends Component {
       />
     );
   };
+  onChangeSearch = (val) => {
+    this.setState({
+      search: val,
+    });
+    const newData = this.state.post_detail.filter((item) => {
+      const itemdata = item.fooddetail.name.toUpperCase();
+      const textData = val.toUpperCase();
+      return itemdata.indexOf(textData) > -1;
+    });
+    this.setState({
+      postdetailtemp: newData,
+    });
+  };
+  onCancelSearch = () => {
+    this.setState({
+      search: '',
+    });
+  };
   render() {
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: '#0984e3'}}>
-        <HeaderCus title={'home'} allowSearch={true} />
+        <HeaderCus
+          title={'home'}
+          allowSearch={true}
+          addnew={true}
+          search={this.state.search}
+          onAddNew={() => {
+            this.props.navigation.navigate('addnew', {
+              user: this.state.userinfo,
+            });
+          }}
+          cancelSearch={() =>this.setState({search:''})}
+          onChangeSearch={this.onChangeSearch}
+          onSubmitSearch={this.onSubmitSearch}
+        />
         <ScrollView
-        refreshControl={<RefreshControl
-        refreshing={this.state.refeshing}
-        onRefresh={this.onRefesh}
-        />}
-        >
-          {this.state.post_detail != [] ? (
-            <View style={{width: WIDTH}}>
-              <FlatList
-                ref="flatlist"
-                data={this.state.post_detail}
-                renderItem={(item, index) => this.renderFoodCard(item, index)}
-              />
-            </View>
-          ) : (
-            <View>
-              <Text>null</Text>
-            </View>
-          )}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refeshing}
+              onRefresh={this.onRefesh}
+            />
+          }>
+          {this.state.search === '' ? (
+            this.state.post_detail != [] ? (
+              <View style={{width: WIDTH}}>
+                <FlatList
+                  ref="flatlist"
+                  data={this.state.post_detail}
+                  renderItem={(item, index) => this.renderFoodCard(item, index)}
+                />
+              </View>
+            ) : (
+              <View>
+                <Text>null</Text>
+              </View>
+            )
+          ) : this.state.postdetailtemp !== '' ? (
+            <FlatList
+              ref="flatlist"
+              data={this.state.postdetailtemp}
+              renderItem={(item, index) => this.renderFoodCard(item, index)}
+            />
+          ) : null}
         </ScrollView>
       </SafeAreaView>
     );

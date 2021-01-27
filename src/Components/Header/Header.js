@@ -1,5 +1,5 @@
-import React, {Component, useState,useEffect} from 'react';
-import { TouchableOpacity, StyleSheet, View, StatusBar } from 'react-native';
+import React, {Component, useState, useEffect} from 'react';
+import {TouchableOpacity, StyleSheet, View, StatusBar} from 'react-native';
 import Icons from 'react-native-vector-icons/dist/Ionicons';
 import {
   Container,
@@ -15,22 +15,22 @@ import {
 import i18n from './../i18n';
 function navHeader(props) {
   const [search, setSearch] = useState(false);
-  const [text, setText] = useState();
+  const [text, setText] = useState(props.search || '');
   const onSearchClick = () => {
     setSearch(true);
   };
   const [allowSearch, setAllowSearch] = useState(props.allowSearch || false);
-  const onChangeSearch = (val) => {
-    setText(val);
-  };
   const [allowSetting, setAllowSetting] = useState(props.setting || false);
   const [allowAddnew, setAllowAddnew] = useState(props.addnew || false);
 
-  useEffect(()=>{
-    StatusBar.setBarStyle('dark-content')
-    StatusBar.setBackgroundColor('rgba(0,0,0,0)')
-    StatusBar.setTranslucent(true)
-  })
+  useEffect(() => {
+    StatusBar.setBackgroundColor('rgba(0,0,0,0)');
+    StatusBar.setTranslucent(true);
+  });
+  const onCancelSearch=()=>{
+    props.cancelSearch();
+    setSearch(false)
+  }
 
   return !search ? (
     <Header transparent>
@@ -38,7 +38,7 @@ function navHeader(props) {
         <Title style={s.text(props.color)}>{i18n.t(`${props.title}`)}</Title>
       </Body>
 
-      <Right>
+      <Right style={{alignItems: 'center'}}>
         {allowSearch ? (
           <TouchableOpacity onPress={onSearchClick}>
             <Icons name={'search-outline'} size={26} color={'#000000'} />
@@ -53,7 +53,12 @@ function navHeader(props) {
           />
         ) : null}
         {allowSetting ? (
-          <Icons style={{padding: 5}} name="medical-outline" size={26} onPress={props.onSetting} />
+          <Icons
+            style={{padding: 5}}
+            name="medical-outline"
+            size={26}
+            onPress={props.onSetting}
+          />
         ) : null}
       </Right>
     </Header>
@@ -62,16 +67,17 @@ function navHeader(props) {
       <View style={{justifyContent: 'center'}}>
         <Icons
           name={'chevron-back-outline'}
-          onPress={() => setSearch(false)}
+          onPress={onCancelSearch}
           size={30}
           color={'black'}
         />
       </View>
       <Item>
         <Input
-          value={text}
-          onChangeText={onChangeSearch}
+          value={props.search}
+          onChangeText={props.onChangeSearch}
           placeholder={i18n.t('search')}
+          onSubmitEditing={props.onSubmitSearch}
         />
         {/* {text !== '' ? null : (
           <Icons
