@@ -10,7 +10,6 @@ import {
   Alert,
 } from 'react-native';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
-import RenderDetailCard from './renderDetailCard';
 import Header from '../Header/HeadergoBack';
 import i18n from '../i18n';
 // import avatarMinh from '../../Assets/Pictures/avatarMinh.jpg';

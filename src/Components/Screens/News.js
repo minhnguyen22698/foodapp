@@ -16,6 +16,9 @@ import RenderNewsCard from './renderNewsCard';
 import firebase from 'firebase';
 import Icons from 'react-native-vector-icons/dist/Ionicons';
 import HeaderCus from '../Header/Header';
+import Advertisement from './Advertisement';
+import {Button} from 'native-base';
+import Carousel from 'react-native-snap-carousel';
 
 const {width: WIDTH} = Dimensions.get('window');
 const storage = firebase.storage();
@@ -54,7 +57,7 @@ class News extends Component {
     this.setState({
       refeshing: true,
     });
-     this.readNewsData();
+    await this.readNewsData();
     setTimeout(() => {
       this.setState({refeshing: false});
     }, 1000);
@@ -76,7 +79,21 @@ class News extends Component {
     this.props.navigation.navigate('Detail', {postinfo: item.fooddetail});
     //console.log(item)
   };
+  renderAdvCard = (item, index) => {
+    return (
+      //   <View>
+      //     <Image
+      //       source={{uri: `${item.item.fooddetail.image}`}}
+      //       style={{width: 500, height: 500}}></Image>
+      //     <Text>{item.item.fooddetail.name}</Text>
+      //   </View>
 
+        <Advertisement
+          image={item.item.fooddetail.image}
+          onPress={() => this.goDetail(item.item)}
+        />
+    );
+  };
   renderFoodCard = (item, index) => {
     return (
       //   <View>
@@ -116,15 +133,14 @@ class News extends Component {
         <HeaderCus
           title={'home'}
           allowSearch={true}
-          addnew={this.props.route.params.userindex }
+          addnew={true}
           search={this.state.search}
           onAddNew={() => {
-            // this.props.navigation.navigate('addnew', {
-            //   user: this.state.userinfo,
-            // });
-            console.log(this.props.route.params) 
+            this.props.navigation.navigate('addnew', {
+              user: this.state.userinfo,
+            });
           }}
-          cancelSearch={() =>this.setState({search:''})}
+          cancelSearch={() => this.setState({search: ''})}
           onChangeSearch={this.onChangeSearch}
           onSubmitSearch={this.onSubmitSearch}
         />
@@ -135,6 +151,26 @@ class News extends Component {
               onRefresh={this.onRefesh}
             />
           }>
+          <View style={{width: '100%', paddingLeft: 10}}>
+            <Text style={{fontSize: 20, color: 'white'}}>Gợi ý cho bạn</Text>
+          </View>
+          <View style={{width: '100%', height: 250}}>
+            <Carousel
+              // ref="flatlist"
+              layout={'tinder'}
+              data={this.state.post_detail}
+              renderItem={(item, index) => this.renderAdvCard(item, index)}
+              sliderWidth={WIDTH}
+              itemWidth={WIDTH}
+              sliderHeight="100%"
+              itemHeight="100%"
+              autoplay={true}
+              autoplayDelay={1000}
+              loop={true}
+              activeAnimationType="spring"
+              hasParallaxImages={true}
+            />
+          </View>
           {this.state.search === '' ? (
             this.state.post_detail != [] ? (
               <View style={{width: WIDTH}}>

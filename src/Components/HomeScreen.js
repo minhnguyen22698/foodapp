@@ -14,6 +14,7 @@ import Icons from 'react-native-vector-icons/dist/Ionicons.js';
 import ProfileScreen from './Profile/Profile';
 import firebase from 'firebase';
 import LoginScreen from './Profile/LoginHome';
+import ChatList from './ChatRoom/chatlist';
 const Tab = createMaterialBottomTabNavigator();
 
 class HomeScreen extends Component {
@@ -78,14 +79,31 @@ class HomeScreen extends Component {
               <Icons name="body-outline" color={'#ffffff'} size={26} />
             ),
           }}>
-          {() => <Checklogin {...this.props} userindex={this.state.userindex} />}
+          {() => (
+            <Checklogin {...this.props} userindex={this.state.userindex} />
+          )}
+        </Tab.Screen>
+        <Tab.Screen
+          name="ChatList"
+          options={{
+            tabBarColor: '#8e44ad',
+            tabBarLabel: 'Message ',
+            tabBarIcon: ({color, size}) => (
+              <Icons name="chatbubbles-outline" color={'#ffffff'} size={26} />
+            ),
+          }}>
+          {() => <ChatList {...this.props} />}
         </Tab.Screen>
       </Tab.Navigator>
-    ); 
+    );
   }
 }
 function Checklogin(props) {
-  return props.userindex ? <ProfileScreen {...props} /> : <LoginScreen {...props} />;
+  return props.userindex ? (
+    <ProfileScreen {...props} />
+  ) : (
+    <LoginScreen {...props} />
+  );
 }
 
 export default HomeScreen;

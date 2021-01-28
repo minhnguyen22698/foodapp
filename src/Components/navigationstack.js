@@ -23,6 +23,8 @@ const Stack = createStackNavigator();
 class Nav extends Component {
   constructor() {
     super();
+    StatusBar.setBackgroundColor('rgba(0,0,0,0)');
+    StatusBar.setTranslucent(true);
   }
   render() {
     return (

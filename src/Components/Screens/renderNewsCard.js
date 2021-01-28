@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   StyleSheet,
@@ -18,22 +18,24 @@ import {
   Body,
   Right,
 } from 'native-base';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const {width: WIDTH} = Dimensions.get('window');
+const { width: WIDTH } = Dimensions.get('window');
 
 function renderNewsCard(props) {
-  const {image, setImage} = props;
-  const {name, setName} = props;
+  const { image, setImage } = props;
+  const { name, setName } = props;
   return (
     <TouchableOpacity style={styles.container} activeOpacity={1} onPress={props.onPress}>
-      <View style={styles.textcontainer}>
-        <View style={styles.text}>
-          <Text style={styles.name}>{name}</Text>
+      <View style={{ width: '100%' }}>
+        <View style={styles.imgcontainer}>
+          <Image style={styles.img} source={{ uri: `${image}` }}></Image>
         </View>
-      </View>
-      <View style={styles.imgcontainer}>
-        <Image style={styles.img} source={{uri: `${image}`}}></Image>
+        <View style={styles.textcontainer}>
+          <View style={styles.text}>
+            <Text style={styles.name}>{name}</Text>
+          </View>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -44,8 +46,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     width: WIDTH,
-    backgroundColor:'transparent',
-    margin:20
+    paddingTop: 5,
+    padding: 5,
   },
   background: {
     flex: 1,
@@ -53,17 +55,16 @@ const styles = StyleSheet.create({
     width: 100,
   },
   imgcontainer: {
-    flex: 1 / 3,
-    backgroundColor: 'black',
-    alignItems: 'flex-end',
+    flex: 1,
+    backgroundColor: 'white',
   },
   img: {
     width: '100%',
-    height: 100,
-    resizeMode:'stretch'
+    height: 200,
+    resizeMode: 'stretch',
   },
   textcontainer: {
-    flex: 2 / 3,
+    flex: 1,
     justifyContent: 'center',
   },
   name: {
@@ -71,20 +72,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   text: {
-    height:'80%',
-    justifyContent:'center',
-    paddingLeft:25,
+    height: '100%',
+    justifyContent: 'center',
+    padding: 10,
     backgroundColor: "white",
-    shadowColor: "rgba(184,181,181,1)",
-    shadowOffset: {
-      height: 5,
-      width: 5
-    },
-    elevation: 75,
-    shadowOpacity: 1,
-    shadowRadius: 25,
     overflow: "visible",
-    borderTopLeftRadius: 33,
-    borderBottomLeftRadius: 33,
   },
 });
