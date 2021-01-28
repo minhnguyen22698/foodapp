@@ -106,7 +106,6 @@ class Detail extends Component {
         .ref('users/' + currentUser.uid + '/profile/saved')
         .on('value', (snapshot) => {
           const arraysave = [];
-          console.log(snapshot.val());
           if (
             snapshot.val() !== '' &&
             snapshot.val() !== undefined &&
@@ -130,10 +129,13 @@ class Detail extends Component {
   }
   goChat = () => {
     if (this.state.currentIndex !== null) {
-      this.props.navigation.navigate('ChatRoom');
-    }
-    else{
-      this.AlertLogin()
+      const {currentUser} = firebase.auth();
+      this.props.navigation.navigate('ChatRoom', {
+        userid: currentUser.uid,
+        contacid: this.state.post.userid,
+      });
+    } else {
+      this.AlertLogin();
     }
   };
   render() {
@@ -264,6 +266,18 @@ class Detail extends Component {
     );
   }
 }
+
+function makeid(length) {
+  var text = '';
+  var possible =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < length; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
 const s = StyleSheet.create({
   container: {
     flex: 1,

@@ -341,10 +341,9 @@ class Profile extends Component {
     }
   };
   onEditProfile = () => {
-    // this.props.navigation.navigate('Editprofile', {
-    //   userinfo: this.state.userinfo,
-    // });
-    console.log(this.state.saved)
+    this.props.navigation.navigate('Editprofile', {
+      userinfo: this.state.userinfo,
+    });
   };
   renderPost = ({item}) => (
     <View>

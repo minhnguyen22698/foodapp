@@ -15,12 +15,13 @@ import {
   LogBox,
   StatusBar
 } from 'react-native';
-import {Modal, Portal} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/dist/Ionicons';
+
+import Icons from 'react-native-vector-icons/dist/Ionicons';
 // import SplashScreen from 'react-native-splash-screen'
 import firebase from 'firebase'
 import fire from '../firebaseconfig'
 import background_image from '../../Assets/bg.png';
+import {Modal, Portal} from 'react-native-paper';
 import Spinner from 'react-native-spinkit';
 import i18n from '../i18n';
 
@@ -159,12 +160,25 @@ class App extends Component {
             onChangeText={this.updateInputVal('email')}
             placeholder={'Email'}
           />
+          <View style={{justifyContent:'center', alignItems:'center',marginTop:25}}>
           <TextInput
             value={this.state.password}
             onChangeText={this.updateInputVal('password')}
             placeholder={'Password'}
+            secureTextEntry={this.state.showPass}
             style={styles.input}
           />
+           <Icons onPress={()=>{
+             this.setState({
+               showPass:!this.state.showPass
+             })
+           }} name={!this.state.showPass?'eye-outline':'eye-off-outline'} size={26} style={{position:'absolute',right:20,alignSelf:'center'}}/>
+          </View>
+         <TouchableOpacity onPress={()=>{
+           this.props.navigation.navigate('forgotpassword')
+         }} style={{ alignItems:'flex-end',margin:10}}>
+           <Text style={{position:'relative',right:0,color:'#ecf0f1'}}>{i18n.t('forgotpass')}</Text>
+         </TouchableOpacity>
           <Portal>
             <Modal
               visible={this.state.isLoading}
@@ -181,7 +195,7 @@ class App extends Component {
             <Text>{i18n.t('login')}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={this.onRegistry}>
-            <Text>Registry</Text>
+            <Text>{i18n.t('registry')}</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -233,7 +247,6 @@ const styles = StyleSheet.create({
   inputcontainer: {
     flex: 4,
     justifyContent: 'flex-end',
-    marginBottom: 50,
   },
   input: {
     backgroundColor: '#ffffff',
@@ -241,7 +254,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     fontSize: 20,
     color: 'black',
-    marginTop: 25,
   },
 });
 export default App;

@@ -1,6 +1,6 @@
 {   
-    "login": "Login",
-    "registry": "Registry",
+    "login": "Sign in",
+    "registry": "Sign up",
     "home":"HOME PAGE",
     "search":"Give me infomation !!",
     "profile":"Profile",
@@ -31,5 +31,6 @@
     "loginalertmess":"Do you want to go to the login screen ?",
     "alertcancel":"Cancel",
     "alertsubmit":"Ok",
-    "seemore":"See more"
+    "seemore":"See more",
+    "forgotpass":"Forgot password ?"
 }

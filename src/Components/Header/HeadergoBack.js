@@ -1,5 +1,5 @@
-import React, {Component, useState,useEffect} from 'react';
-import {TouchableOpacity, StyleSheet,StatusBar} from 'react-native';
+import React, {Component, useState, useEffect} from 'react';
+import {TouchableOpacity, StyleSheet, StatusBar} from 'react-native';
 import Icons from 'react-native-vector-icons/dist/Ionicons';
 import {
   Container,
@@ -16,7 +16,7 @@ import i18n from './../i18n';
 function navHeader(props) {
   const [search, setSearch] = useState(false);
   const [text, setText] = useState();
-  const [allowSearch,setAllowSearch]=useState(props.allowSearch||false)
+  const [allowSearch, setAllowSearch] = useState(props.allowSearch || false);
   const onSearchClick = () => {
     setSearch(true);
     console.log('press');
@@ -24,32 +24,42 @@ function navHeader(props) {
   const onChangeSearch = (val) => {
     setText(val);
   };
-  useEffect(()=>{
-    StatusBar.setBarStyle('dark-content')
-    StatusBar.setBackgroundColor('rgba(0,0,0,0)')
-    StatusBar.setTranslucent(true)
-  })
+  useEffect(() => {
+    StatusBar.setBackgroundColor('rgba(0,0,0,0)');
+    StatusBar.setTranslucent(true);
+  });
 
   return !search ? (
     <Header transparent>
-        <Left>
-            <Icons name={"arrow-back-outline"} size={26} color={'black'} onPress={props.onGoBack}/>
-        </Left>
+      <Left>
+        <Icons
+          name={'arrow-back-outline'}
+          size={26}
+          color={props.color || 'black'}
+          onPress={props.onGoBack}
+        />
+      </Left>
       <Body style={s.title}>
-        <Title style={s.text}>{i18n.t(`${props.title}`)}</Title>
+        <Title style={s.text(props.color)}>{i18n.t(`${props.title}`)}</Title>
       </Body>
-      {allowSearch ? <Right>
-        <TouchableOpacity onPress={onSearchClick}>
-          <Icons name={'search-outline'} size={26} color={'#000000'} />
-        </TouchableOpacity>
-      </Right>:null}
+      {allowSearch ? (
+        <Right>
+          <TouchableOpacity onPress={onSearchClick}>
+            <Icons
+              name={'search-outline'}
+              size={26}
+              color={props.color || '#00000'}
+            />
+          </TouchableOpacity>
+        </Right>
+      ) : null}
     </Header>
   ) : (
     <Header transparent searchBar rounded>
-      <View style={{justifyContent:'center'}}>
+      <View style={{justifyContent: 'center'}}>
         <Icons
           name={'chevron-back-outline'}
-          onPress={()=>setSearch(false)}
+          onPress={() => setSearch(false)}
           size={30}
           color={'black'}
         />
@@ -77,10 +87,10 @@ const s = StyleSheet.create({
   back: {
     backgroundColor: 'red',
   },
-  text: {
+  text: (color) => ({
     fontFamily: 'cooperb',
-    color: 'black',
-  },
+    color: color || 'black',
+  }),
 });
 
 export default navHeader;
