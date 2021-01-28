@@ -32,7 +32,7 @@ class ChatRoom extends React.Component {
     StatusBar.setTranslucent(true);
     this.getProfile('userinfo', this.state.userid);
     this.getProfile('contactinfo', this.state.contacid);
-    this.getChatData()
+    this.getChatData();
   }
   getChatData = () => {};
   sendMessage = () => {
@@ -51,44 +51,43 @@ class ChatRoom extends React.Component {
     firebase
       .database()
       .ref(`/messages/${this.state.userid}/${this.state.contacid}`)
-      .push({message: this.state.message, type: 'send'})
+      .push({
+        contacid: this.state.contacid,
+        message: this.state.message,
+        type: 'send',
+      })
       .then(() => {
         firebase
           .database()
           .ref(`/messages/${this.state.contacid}/${this.state.userid}`)
-          .push({message: this.state.message, type: 'receive'});
+          .push({
+            message: this.state.message,
+            type: 'receive',
+            contactid: this.state.userid,
+          });
       })
       .then(() => {
         // Store header user conversations
         firebase
           .database()
-          .ref(
-            `/user_conversations/${this.state.userid}/${this.state.contacid}`,
-          )
+          .ref(`user_conversations/${this.state.userid}/${this.state.contacid}`)
           .set({
             name: this.state.contactinfo.username,
             lastMessage: this.state.message,
-          });
+            contactid:this.state.contacid
+          })
       })
       .then(() => {
-        // Store header contact conversations
+        // Store header user conversations
         firebase
           .database()
-          .ref(`/users/${this.state.userid}`)
-          .once('value')
-          .then((snapshot) => {
-            // const dataUser = _.first(_.values(snapshot.val()));
-            firebase
-              .database()
-              .ref(
-                `/user_conversations/${this.state.contacid}/${this.state.userid}`,
-              )
-              .set({
-                name: this.state.userid.username,
-                lastMessage: this.state.message,
-              });
-          });
-      });
+          .ref(`user_conversations/${this.state.contacid}/${this.state.userid}`)
+          .set({
+            name: this.state.userinfo.username,
+            lastMessage: this.state.message,
+            contacid:this.state.userid
+          })
+      })
   };
   getProfile(key, uid) {
     firebase
@@ -106,26 +105,31 @@ class ChatRoom extends React.Component {
     firebase
       .database()
       .ref(`messages/${this.state.userid}/${this.state.contacid}`)
-      .on('value',snapshoot=>{
-        if(snapshoot.val()!==null&&snapshoot.val()!==undefined&&snapshoot.val()!==null){
+      .on('value', (snapshoot) => {
+        if (
+          snapshoot.val() !== null &&
+          snapshoot.val() !== undefined &&
+          snapshoot.val() !== null
+        ) {
           this.setState({
-            chatdata:Object.values( snapshoot.val())
-          })
+            chatdata: Object.values(snapshoot.val()),
+          });
         }
-      })
+      });
   };
-  renderRow=({item})=> {
+  renderRow = ({item}) => {
     if (item.type === 'send') {
       return (
         <View
           style={{
+            margin:10,
             alignItems: 'flex-end',
             marginTop: 5,
             marginLeft: 40,
             marginBottom: 5,
           }}>
           <View style={{backgroundColor: '#dbf5b4', borderRadius: 10}}>
-            <Text style={{fontSize: 16, color: '#0d0d0d', padding: 8}}>
+            <Text style={{fontSize: 20, color: '#0d0d0d', padding: 8}}>
               {item.message}
             </Text>
           </View>
@@ -135,6 +139,7 @@ class ChatRoom extends React.Component {
     return (
       <View
         style={{
+          margin:10,
           alignItems: 'flex-start',
           marginTop: 5,
           marginRight: 40,
@@ -142,13 +147,13 @@ class ChatRoom extends React.Component {
         }}>
         <View style={{backgroundColor: '#bfbfbf', borderRadius: 10}}>
           <Text
-            style={{fontSize: 16, color: '#0d0d0d', padding: 8, elevation: 1}}>
+            style={{fontSize: 20, color: '#0d0d0d', padding: 8, elevation: 1}}>
             {item.message}
           </Text>
         </View>
       </View>
     );
-  }
+  };
   render() {
     return (
       <SafeAreaView style={{flex: 1}}>
@@ -192,12 +197,12 @@ class ChatRoom extends React.Component {
             flexDirection: 'column',
             justifyContent: 'flex-end',
           }}>
-            <FlatList
+          <FlatList
             data={this.state.chatdata}
             renderItem={this.renderRow}
-            keyExtractor={item=>item.id}
-            />
-          </View>
+            keyExtractor={(item) => item.id}
+          />
+        </View>
         <View style={{flex: 1 / 10}}>
           <View
             style={{
@@ -222,10 +227,7 @@ class ChatRoom extends React.Component {
             </View>
             <View style={{flex: 2 / 10}}>
               <TouchableOpacity onPress={this.sendMessage}>
-                <Text>Send</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>console.log(this.state.chatdata)}>
-                <Text>Get</Text>
+                <Text style={{fontSize:20}}>Send</Text>
               </TouchableOpacity>
             </View>
           </View>

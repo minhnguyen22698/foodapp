@@ -33,11 +33,25 @@ class News extends Component {
       postdetailtemp: '',
       refeshing: false,
       search: '',
+      isLogin: this.props.route.params.userindex,
+      userinfo: '',
     };
   }
   async componentDidMount() {
     LogBox.ignoreAllLogs();
     await this.readNewsData();
+    const {currentUser} = firebase.auth();
+    firebase
+      .database()
+      .ref(`users/${currentUser.uid}/profile`)
+      .once('value')
+      .then((snapshot) => {
+        if (snapshot.val() !== undefined && snapshot.val() !== null) {
+          this.setState({
+            userinfo: snapshot.val(),
+          });
+        }
+      });
     // this.setState({
     //   post_detail: temp,
     // });
@@ -88,10 +102,10 @@ class News extends Component {
       //     <Text>{item.item.fooddetail.name}</Text>
       //   </View>
 
-        <Advertisement
-          image={item.item.fooddetail.image}
-          onPress={() => this.goDetail(item.item)}
-        />
+      <Advertisement
+        image={item.item.fooddetail.image}
+        onPress={() => this.goDetail(item.item)}
+      />
     );
   };
   renderFoodCard = (item, index) => {
@@ -133,12 +147,13 @@ class News extends Component {
         <HeaderCus
           title={'home'}
           allowSearch={true}
-          addnew={true}
+          addnew={this.state.isLogin}
           search={this.state.search}
           onAddNew={() => {
             this.props.navigation.navigate('addnew', {
               user: this.state.userinfo,
             });
+            console.log(this.state.userinfo);
           }}
           cancelSearch={() => this.setState({search: ''})}
           onChangeSearch={this.onChangeSearch}
@@ -154,37 +169,42 @@ class News extends Component {
           <View style={{width: '100%', paddingLeft: 10}}>
             <Text style={{fontSize: 20, color: 'white'}}>Gợi ý cho bạn</Text>
           </View>
-          <View style={{width: '100%', height: 250}}>
-            <Carousel
-              // ref="flatlist"
-              layout={'tinder'}
-              data={this.state.post_detail}
-              renderItem={(item, index) => this.renderAdvCard(item, index)}
-              sliderWidth={WIDTH}
-              itemWidth={WIDTH}
-              sliderHeight="100%"
-              itemHeight="100%"
-              autoplay={true}
-              autoplayDelay={1000}
-              loop={true}
-              activeAnimationType="spring"
-              hasParallaxImages={true}
-            />
-          </View>
+
           {this.state.search === '' ? (
-            this.state.post_detail != [] ? (
-              <View style={{width: WIDTH}}>
-                <FlatList
-                  ref="flatlist"
+            <View>
+              <View style={{width: '100%', height: 250}}>
+                <Carousel
+                  // ref="flatlist"
+                  layout={'tinder'}
                   data={this.state.post_detail}
-                  renderItem={(item, index) => this.renderFoodCard(item, index)}
+                  renderItem={(item, index) => this.renderAdvCard(item, index)}
+                  sliderWidth={WIDTH}
+                  itemWidth={WIDTH}
+                  sliderHeight="100%"
+                  itemHeight="100%"
+                  autoplay={true}
+                  autoplayDelay={1000}
+                  loop={true}
+                  activeAnimationType="spring"
+                  hasParallaxImages={true}
                 />
               </View>
-            ) : (
-              <View>
-                <Text>null</Text>
-              </View>
-            )
+              {this.state.post_detail != [] ? (
+                <View style={{width: WIDTH}}>
+                  <FlatList
+                    ref="flatlist"
+                    data={this.state.post_detail}
+                    renderItem={(item, index) =>
+                      this.renderFoodCard(item, index)
+                    }
+                  />
+                </View>
+              ) : (
+                <View>
+                  <Text>null</Text>
+                </View>
+              )}
+            </View>
           ) : this.state.postdetailtemp !== '' ? (
             <FlatList
               ref="flatlist"

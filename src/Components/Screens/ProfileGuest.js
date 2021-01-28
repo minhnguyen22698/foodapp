@@ -407,7 +407,7 @@ class Profile extends Component {
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
             {this.state.isSeemore ? (
               <View >
-                <View style={{margin: 10, backgroundColor: 'red',}}>
+                <View style={{margin: 10, backgroundColor: '#ecf0f1',}}>
                   <View style={{flexDirection:'row',padding:10 }}>
                     <Icons name="person" size={26} color="silver"/>
                     <Text style={{color: 'black', fontSize: 20,marginLeft:20}}>
@@ -418,6 +418,12 @@ class Profile extends Component {
                     <Icons name="calendar" size={26} color="silver"/>
                     <Text style={{color: 'black', fontSize: 20,marginLeft:20}}>
                       {this.state.userinfo.dob}
+                    </Text>
+                  </View>
+                  <View style={{flexDirection:'row',padding:10}}>
+                    <Icons name="home" size={26} color="silver"/>
+                    <Text style={{color: 'black', fontSize: 20,marginLeft:20}}>
+                      {this.state.userinfo.address}
                     </Text>
                   </View>
                 </View>

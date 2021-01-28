@@ -77,25 +77,26 @@ class Detail extends Component {
     }
   };
   onSavePost = () => {
-    if (this.state.currentIndex !== null) {
-      const {currentUser} = firebase.auth();
-      const newReference = firebase
-        .database()
-        .ref('users/' + currentUser.uid + '/profile/saved')
-        .push();
-      newReference
-        .set({
-          postid: this.state.post.postid,
-        })
-        .then(() => {
-          console.log('saved');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      this.AlertLogin();
-    }
+    // if (this.state.currentIndex !== null) {
+    const {currentUser} = firebase.auth();
+    //   const newReference = firebase
+    //     .database()
+    //     .ref('users/' + currentUser.uid + '/profile/saved')
+    //     .push();
+    //   newReference
+    //     .set({
+    //       postid: this.state.post.postid,
+    //     })
+    //     .then(() => {
+    //       console.log('saved');
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // } else {
+    //   this.AlertLogin();
+    // }
+    console.log(currentUser.uid === this.state.post.userid);
   };
   getListSaved = () => {
     if (this.state.currentIndex !== null) {
@@ -138,6 +139,7 @@ class Detail extends Component {
     }
   };
   render() {
+    const {currentUser} = firebase.auth();
     return (
       <SafeAreaView style={s.container}>
         <Header
@@ -154,6 +156,7 @@ class Detail extends Component {
               <Text style={s.foodname}>{this.state.post.name}</Text>
               <View style={s.userbtn}>
                 {this.state.listSaved !== [] &&
+                currentUser.uid !== this.state.post.userid &&
                 !this.state.listSaved.includes(this.state.post.postid) ? (
                   <TouchableOpacity
                     style={s.userbtnitem}

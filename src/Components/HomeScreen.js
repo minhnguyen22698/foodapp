@@ -48,6 +48,19 @@ class HomeScreen extends Component {
     StatusBar.setBarStyle('dark-content');
     StatusBar.setBackgroundColor('rgba(0,0,0,0)');
     StatusBar.setTranslucent(true);
+    if (this.state.userindex == true) {
+      const {currentUser} = firebase.auth();
+      firebase
+        .database()
+        .ref('users/' + currentUser.uid)
+        .once('value')
+        .then(async (snapshoot) => {
+          console.log(snapshoot.val());
+          if (snapshoot.val() == null || snapshoot.val() == undefined) {
+            this.props.navigation.navigate('Initprofile');
+          }
+        });
+    }
   }
   render() {
     return (
@@ -66,7 +79,9 @@ class HomeScreen extends Component {
               <Icons name="newspaper-outline" color={'#ffffff'} size={26} />
             ),
           }}>
-          {() => <NewsScreen {...this.props} data={'true'} />}
+          {() => (
+            <NewsScreen {...this.props} userindex={this.state.userindex} />
+          )}
         </Tab.Screen>
         <Tab.Screen
           name="Profile"

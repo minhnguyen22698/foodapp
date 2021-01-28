@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import {
 import {
   Container,
   Header,
-  Content,
+  InputGroup,
   Form,
   Item,
   Input,
@@ -21,7 +21,7 @@ import {
   Textarea,
   Accordion,
 } from 'native-base';
-import {ScrollView} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import Icons from 'react-native-vector-icons/dist/Ionicons.js';
 import ImagePicker from 'react-native-image-crop-picker';
 import uploadimg from '../uploadImage';
@@ -43,32 +43,32 @@ function makeid(length) {
   return text;
 }
 
-const {width: WIDTH} = Dimensions.get('window');
-const {height: HEIGHT} = Dimensions.get('window');
+const { width: WIDTH } = Dimensions.get('window');
+const { height: HEIGHT } = Dimensions.get('window');
 
 const discriptiontemp = [];
-const datetemp= new Date()
-const todaytemp=datetemp.getFullYear()+datetemp.getMonth()+datetemp.getDate()
+const datetemp = new Date()
+const todaytemp = datetemp.getFullYear() + datetemp.getMonth() + datetemp.getDate()
 
 class AddNew extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user:this.props.route.params.user,
+      user: this.props.route.params.user,
       fooddetail: {
-        postid:makeid(10)+todaytemp,
-        userid:'',
-        userimg:'',
-        username:'',
+        postid: makeid(10) + todaytemp,
+        userid: '',
+        userimg: '',
+        username: '',
         name: '',
         material: '',
         discription: [],
         image: '',
-        calo:0,
-        prep:0,
-        liked:'',
-        saved:'',
-        createdtime:'',
+        calo: 0,
+        prep: 0,
+        liked: '',
+        saved: '',
+        createdtime: '',
       },
       image: {
         uri: '',
@@ -147,7 +147,7 @@ class AddNew extends Component {
     }));
   };
   _onPost = async () => {
-    const {currentUser} = firebase.auth();
+    const { currentUser } = firebase.auth();
     let date = new Date();
     let today = (
       date.getDate() +
@@ -158,30 +158,30 @@ class AddNew extends Component {
       '/' +
       makeid(5)
     ).toString();
-    const createdtime= date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate()
+    const createdtime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate()
     const name = currentUser.uid + today;
     const uri = await uploadImage(this.state.image.uri, name);
     this.setState((prevState) => ({
       fooddetail: {
         ...prevState.fooddetail,
-        userid:currentUser.uid,
-        username:this.state.user.username,
+        userid: currentUser.uid,
+        username: this.state.user.username,
         image: uri,
-        userimg:this.state.user.image,
-        createdtime:createdtime
+        userimg: this.state.user.image,
+        createdtime: createdtime
       },
     }));
-    firebase.database().ref('users/'+currentUser.uid+'/profile/posts').push({
-      posts:this.state.fooddetail.postid
+    firebase.database().ref('users/' + currentUser.uid + '/profile/posts').push({
+      posts: this.state.fooddetail.postid
     })
     firebase
       .database()
-      .ref('data/'+this.state.fooddetail.postid)
+      .ref('data/' + this.state.fooddetail.postid)
       .set({
         fooddetail: this.state.fooddetail,
       })
       .catch({});
-      this.props.navigation.goBack();
+    this.props.navigation.goBack();
   };
   permision = async () => {
     const granted = await PermissionsAndroid.request(
@@ -198,7 +198,7 @@ class AddNew extends Component {
     );
     console.log(granted);
   };
-   _onUploadImage(cropping, mediaType = 'photo') {
+  _onUploadImage(cropping, mediaType = 'photo') {
     ImagePicker.openCamera({
       cropping: cropping,
       width: 500,
@@ -248,7 +248,7 @@ class AddNew extends Component {
           },
           images: null,
         });
-        uploadImage(image.path,'image/jpeg')
+        uploadImage(image.path, 'image/jpeg')
       })
       .catch((e) => {
         console.log(e);
@@ -262,9 +262,9 @@ class AddNew extends Component {
     // });
     this.props.navigation.goBack();
   };
-  onTesting=()=>{
-    const {currentUser} = firebase.auth()
-    const newRef= firebase.database().ref('users/'+currentUser.uid+'/profile/post').push()
+  onTesting = () => {
+    const { currentUser } = firebase.auth()
+    const newRef = firebase.database().ref('users/' + currentUser.uid + '/profile/post').push()
     newRef.set({
       posts: makeid(20)
     })
@@ -280,7 +280,7 @@ class AddNew extends Component {
             </Item>
             <Textarea
               onChangeText={this.changeStepValue('stepvalue', item.key)}
-              style={{width: WIDTH - 10, marginLeft: 5}}
+              style={{ width: WIDTH - 10, marginLeft: 5 }}
               rowSpan={5}
               bordered
               placeholder={'làm cái vẹo gì trong đây'}
@@ -290,43 +290,43 @@ class AddNew extends Component {
       );
     });
     return (
-        <ScrollView style={s.background}>
-          <View style={s.title}>
-            <Text style={s.texttitle}>{i18n.t('addnewtitle')}</Text>
-          </View>
-          <View style={s.inputform}>
-            <Form>
-              <Item floatingLabel>
-                <Label>Food name</Label>
-                <Input onChangeText={this.onChangeText('name')} />
-              </Item>
-              <Item floatingLabel>
-                <Label>Material</Label>
-                <Input onChangeText={this.onChangeText('material')} />
-              </Item>
-            </Form>
-            {renderStep}
-            <View style={s.btncontainer}>
-              <TouchableOpacity style={s.btnadd} onPress={this.addmoreStep}>
-                <Text>More step more drama</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={s.btnadd} onPress={this.delLastesStep}>
-                <Text>Less step less drama</Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  width: WIDTH,
-                  alignItems: 'center',
-                }}>
-                <Text>Upload Image</Text>
-                {this.state.image.uri !== '' ? (
-                  <View>
-                    <Image
-                      style={{width: 500, height: 500}}
-                      source={{uri: this.state.image.uri}}
-                    />
-                  </View>
-                ) : (
+      <ScrollView style={s.background}>
+        <View style={s.title}>
+          <Text style={s.texttitle}>{i18n.t('addnewtitle')}</Text>
+        </View>
+        <View style={s.inputform}>
+          <Form>
+            <Item floatingLabel>
+              <Label>Food name</Label>
+              <Input onChangeText={this.onChangeText('name')} />
+            </Item>
+            <Item floatingLabel>
+              <Label>Material</Label>
+              <Input onChangeText={this.onChangeText('material')} />
+            </Item>
+          </Form>
+          {renderStep}
+          <View style={s.btncontainer}>
+            <TouchableOpacity style={s.btnadd} onPress={this.addmoreStep}>
+              <Text>More step more drama</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={s.btnadd} onPress={this.delLastesStep}>
+              <Text>Less step less drama</Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                width: WIDTH,
+                alignItems: 'center',
+              }}>
+              <Text>Upload Image</Text>
+              {this.state.image.uri !== '' ? (
+                <View>
+                  <Image
+                    style={{ width: 500, height: 500 }}
+                    source={{ uri: this.state.image.uri }}
+                  />
+                </View>
+              ) : (
                   <View>
                     <TouchableOpacity
                       onPress={async () => this.pickSingle(false)}>
@@ -337,25 +337,31 @@ class AddNew extends Component {
                     </TouchableOpacity>
                   </View>
                 )}
-              </View>
-              <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity style={s.post} onPress={this.onCancle}>
-                  <Text>Cancel</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={s.post} onPress={this._onPost}>
-                  <Text>Post</Text>
-                </TouchableOpacity>
-              </View>
             </View>
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity style={s.post} onPress={this.onCancle}>
+                <Text>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={s.post} onPress={this.state.isEdit ? this._onPost : () => alert('Hãy nhập thông tin món ăn')}>
+              {/* <TouchableOpacity style={s.post} onPress={this._onPost}> */}
+                <Text>Post</Text>
+              </TouchableOpacity>
+            </View>
+            {/* <View style={{ backgroundColor: 'red', width: '100%' }}>
+              <TouchableOpacity style={{ width: '100%' }} onPress={this.state.isEdit ? () => alert('true') : () => alert('false')}>
+                <Text>Test</Text>
+              </TouchableOpacity>
+            </View> */}
           </View>
-        </ScrollView>
+        </View>
+      </ScrollView>
     );
   }
 }
 const s = StyleSheet.create({
   background: {
     height: null,
-    paddingTop:20,
+    paddingTop: 20,
     backgroundColor: '#6531F5',
   },
   title: {

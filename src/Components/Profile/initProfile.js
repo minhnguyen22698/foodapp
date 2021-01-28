@@ -231,14 +231,14 @@ class profile extends Component {
               <View>
                 <TouchableOpacity
                   style={s.modalitem}
-                  onPress={() => this.pickSingleWithCamera(false)}>
+                  onPress={() => this.pickSingleWithCamera(true)}>
                   <Icons style={s.iconitem} name={'camera-outline'} size={26} />
                   <Text style={s.textitem}>{i18n.t('imgpickercam')}</Text>
                 </TouchableOpacity>
                 <Divider />
                 <TouchableOpacity
                   style={s.modalitem}
-                  onPress={() => this.pickSingle(false)}>
+                  onPress={() => this.pickSingle(true)}>
                   <Icons style={s.iconitem} name={'images-outline'} size={26} />
                   <Text style={s.textitem}>{i18n.t('uploadimgfile')}</Text>
                 </TouchableOpacity>

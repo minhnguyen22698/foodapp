@@ -86,18 +86,6 @@ class App extends Component {
         this.state.password.trim(),
       )
       .then(  (res) => {
-        firebase
-          .database()
-          .ref('users/' + res.user.uid)
-          .once('value')
-          .then(async (snapshoot) => {
-            if (snapshoot.val() == null || snapshoot.val() == undefined) {
-              this.props.navigation.navigate('Initprofile')
-            }
-            else{
-               //console.log(Object.values(snapshoot.val()))
-            }
-          });
         // this.props.navigation.navigate('profile')
       })
       .catch((error) => {
